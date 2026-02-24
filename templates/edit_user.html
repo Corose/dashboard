@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ONI FINTECH | Editar Usuario</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    background:#0A0B0E;
+    font-family:'Space Grotesk',sans-serif;
+    color:#E0E0E0;
+}
+
+.card-custom{
+    background:#13151A;
+    border:1px solid #262A33;
+    padding:30px;
+    border-radius:14px;
+    max-width:900px;
+    margin:auto;
+}
+
+.form-label{
+    color:#C5A059;
+    font-size:12px;
+    letter-spacing:1px;
+    margin-bottom:5px;
+}
+
+.form-control{
+    background:#0F131A;
+    border:1px solid #2E3440;
+    color:white;
+    height:38px;
+    font-size:14px;
+}
+
+.form-control:focus{
+    border-color:#D42B08;
+    box-shadow:0 0 0 .15rem rgba(212,43,8,.25);
+}
+
+textarea.form-control{
+    height:80px;
+    resize:none;
+}
+
+.dropdown-access{
+    background:#161A22;
+    border:1px solid #2E3440;
+    border-radius:12px;
+    padding:12px;
+    max-height:240px;
+    overflow-y:auto;
+}
+
+.dropdown-access label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    font-weight:500;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    color:#E0E0E0;
+    transition:all .2s ease;
+}
+
+.dropdown-access label:hover{
+    background:rgba(212,43,8,0.12);
+}
+
+.dropdown-access input{
+    accent-color:#D42B08;
+    transform:scale(1.15);
+}
+
+.access-btn{
+    background:#0F131A;
+    border:1px solid #2E3440;
+    color:#E0E0E0;
+    font-size:14px;
+    height:38px;
+}
+
+.access-btn:hover{
+    border-color:#D42B08;
+}
+
+.btn-oni{
+    background:#D42B08;
+    border:none;
+    color:white;
+    font-weight:600;
+}
+
+.btn-oni:hover{
+    background:#b62506;
+}
+
+.page-title{
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container py-5">
+
+<div class="card-custom">
+
+<div class="page-title">
+<i class="bi bi-pencil-square text-danger me-2"></i>Editar Usuario
+</div>
+
+<form method="POST">
+
+<div class="row g-3">
+
+<div class="col-md-6">
+<label class="form-label">Nombre</label>
+<input name="nombre" value="{{ user.nombre }}" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Usuario</label>
+<input name="usuario" value="{{ user.usuario }}" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Correo</label>
+<input name="correo" value="{{ user.correo }}" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Equipo</label>
+<input name="equipo" value="{{ user.equipo }}" class="form-control">
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Jefe Directo</label>
+<input name="jefe" value="{{ user.jefe }}" class="form-control">
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Comentarios</label>
+<textarea name="comentarios" class="form-control">{{ user.comentarios }}</textarea>
+</div>
+
+<!-- ACCESOS -->
+<div class="col-12">
+<label class="form-label">Privilegios de Acceso</label>
+
+{% set accesos_list = user.accesos.split(",") if user.accesos else [] %}
+
+<div class="dropdown w-100">
+<button class="btn access-btn w-100 text-start dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown">
+Modificar accesos
+</button>
+
+<div class="dropdown-menu dropdown-access w-100">
+
+<label>
+<input type="checkbox" name="accesos" value="VPN"
+{% if "VPN" in accesos_list %}checked{% endif %}>
+<i class="bi bi-shield-lock-fill text-danger"></i> VPN
+</label>
+
+<label>
+<input type="checkbox" name="accesos" value="SAP"
+{% if "SAP" in accesos_list %}checked{% endif %}>
+<i class="bi bi-database-fill text-danger"></i> SAP
+</label>
+
+<label>
+<input type="checkbox" name="accesos" value="HELIX"
+{% if "HELIX" in accesos_list %}checked{% endif %}>
+<i class="bi bi-cpu-fill text-danger"></i> HELIX
+</label>
+
+<label>
+<input type="checkbox" name="accesos" value="HANA"
+{% if "HANA" in accesos_list %}checked{% endif %}>
+<i class="bi bi-server text-danger"></i> HANA
+</label>
+
+<label>
+<input type="checkbox" name="accesos" value="IPC"
+{% if "IPC" in accesos_list %}checked{% endif %}>
+<i class="bi bi-hdd-network-fill text-danger"></i> IPC
+</label>
+
+<label>
+<input type="checkbox" name="accesos" value="GCP"
+{% if "GCP" in accesos_list %}checked{% endif %}>
+<i class="bi bi-cloud-fill text-danger"></i> GCP
+</label>
+
+<label>
+<input type="checkbox" name="accesos" value="DIRECTORIO ACTIVO"
+{% if "DIRECTORIO ACTIVO" in accesos_list %}checked{% endif %}>
+<i class="bi bi-diagram-3-fill text-danger"></i> DIRECTORIO ACTIVO
+</label>
+
+</div>
+</div>
+
+</div>
+
+<!-- BOTONES -->
+<div class="col-12 mt-3 d-flex gap-3">
+<button class="btn btn-oni px-4">
+<i class="bi bi-check-circle me-1"></i>Guardar Cambios
+</button>
+
+<a href="{{ url_for('dashboard') }}" class="btn btn-outline-light px-4">
+Cancelar
+</a>
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

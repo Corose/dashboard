@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oni System | Cyber Login</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-red: #ff2e00;
+            --neon-blue: #00f2ff;
+            --glass-bg: rgba(10, 11, 14, 0.75);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #050505 url('https://images.alphacoders.com/135/1358310.png') center/cover no-repeat;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 20%, #000 90%);
+            z-index: 0;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 380px;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 46, 0, 0.3);
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8),
+                        inset 0 0 15px rgba(255, 46, 0, 0.1);
+            clip-path: polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%);
+        }
+
+        .oni-head {
+            width: 120px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--neon-red));
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .system-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #aaa;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: transparent;
+            border: 1px solid #333;
+            color: white;
+            outline: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .input-group input:focus {
+            border: 1px solid var(--neon-red);
+            box-shadow: 0 0 10px var(--neon-red);
+        }
+
+        .btn-initiate {
+            width: 100%;
+            padding: 15px;
+            background: #fff;
+            color: #000;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-initiate:hover {
+            background: var(--neon-red);
+            color: white;
+            box-shadow: 0 0 30px var(--neon-red);
+            transform: scale(1.02);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--neon-red)); transform: translateY(0); }
+            50% { filter: drop-shadow(0 0 25px var(--neon-red)); transform: translateY(-5px); }
+        }
+
+        .hud-line {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: var(--neon-red);
+            box-shadow: 0 0 10px var(--neon-red);
+        }
+        .line-tl { top: 20px; left: -1px; }
+        .line-br { bottom: 20px; right: -1px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="hud-line line-tl"></div>
+        <div class="hud-line line-br"></div>
+
+        <img src="https://cdn-icons-png.flaticon.com/512/1042/1042375.png" 
+             alt="Oni Mask" 
+             class="oni-head">
+
+        <div class="system-title">
+            OKAI LAB
+        </div>
+
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="input-group">
+                <label>USERNAME</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label>PASSWORD</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-initiate">
+                INICIAR
+            </button>
+
+        </form>
+    </div>
+
+</body>
+</html>

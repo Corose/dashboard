@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ONI FINTECH</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
+
+<style>
+
+/* ============================= */
+/* GLOBAL */
+/* ============================= */
+
+body{
+    background:
+        radial-gradient(circle at 20% 20%, rgba(212,43,8,.08), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(197,160,89,.05), transparent 40%),
+        #0A0B0E;
+    font-family:'Space Grotesk',sans-serif;
+    color:#E0E0E0;
+
+}
+body {
+    overflow-x: hidden;
+}
+
+.main-container {
+    overflow: visible !important;
+}
+*{
+    transition:background .2s ease, border .2s ease, color .2s ease, transform .2s ease;
+}
+
+::-webkit-scrollbar{ width:6px; }
+::-webkit-scrollbar-track{ background:#0F1116; }
+::-webkit-scrollbar-thumb{
+    background:#D42B08;
+    border-radius:10px;
+}
+
+/* ============================= */
+/* NAVBAR */
+/* ============================= */
+
+.navbar-custom{
+    background:rgba(17,19,24,.85);
+    backdrop-filter: blur(10px);
+    border-bottom:2px solid #D42B08;
+    padding:12px 40px;
+    position:relative;
+}
+
+.navbar-custom::after{
+    content:"";
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,#D42B08,#C5A059);
+}
+
+.logo-img{
+    height:38px;
+    filter: drop-shadow(0 0 6px rgba(212,43,8,.4));
+}
+
+/* ============================= */
+/* CARDS */
+/* ============================= */
+
+.card-custom,
+.kpi-card{
+    background:#13151A;
+    border:1px solid #262A33;
+    padding:20px;
+    border-radius:14px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+
+.kpi-card{
+    background:linear-gradient(135deg,#13151A,#1A1D24);
+}
+
+.kpi-title{
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:1px;
+    color:#C5A059;
+}
+
+.kpi-number{
+    font-size:48px;
+    font-weight:700;
+    background: linear-gradient(90deg,#ffffff,#C5A059);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.kpi-icon{
+    font-size:42px;
+    color:#D42B08;
+}
+
+.kpi-card:hover .kpi-icon{
+    transform:scale(1.1);
+}
+
+/* ============================= */
+/* TABLE */
+/* ============================= */
+
+.table-oni{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table-oni th{
+    background:#1A1D24;
+    color:#C5A059;
+    font-size:12px;
+    padding:10px;
+    border-bottom:2px solid #D42B08;
+    position:sticky;
+    top:0;
+    z-index:2;
+}
+
+.table-oni td{
+    padding:10px;
+    border-bottom:1px solid #262A33;
+    font-size:13px;
+}
+
+.table-oni tbody tr{
+    transition:.2s ease;
+}
+
+.table-oni tbody tr:hover{
+    background:#1A1F27;
+    transform:scale(1.005);
+}
+
+/* ============================= */
+/* BADGES */
+/* ============================= */
+
+.badge-access{
+    background:linear-gradient(135deg,#1A1D24,#202530);
+    border:1px solid #D42B08;
+    font-size:10px;
+    padding:4px 10px;
+    border-radius:30px;
+    margin:2px;
+    display:inline-block;
+}
+
+.badge-access:hover{
+    background:#D42B08;
+    color:white;
+}
+
+/* ============================= */
+/* FORM */
+/* ============================= */
+
+.form-label{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:1px;
+    color:#C5A059;
+    text-transform:uppercase;
+    margin-bottom:6px;
+    display:block;
+}
+
+.form-control{
+    background:#0F141B;
+    border:1px solid #2A2F3A;
+    color:#FFFFFF;
+    font-size:13px;
+    padding:10px 12px;
+    border-radius:8px;
+}
+
+.form-control:focus{
+    background:#141922;
+    border:1px solid #D42B08;
+    box-shadow:0 0 0 0.15rem rgba(212,43,8,.25);
+    color:#ffffff;
+}
+
+.form-control::placeholder{
+    color:#6C757D;
+}
+
+.form-control:focus{
+    border:1px solid #D42B08;
+    box-shadow:0 0 0 0.15rem rgba(212,43,8,.25);
+    color:#fff;
+}
+
+.btn-danger{
+    background:linear-gradient(135deg,#D42B08,#ff5c33);
+    border:none;
+    font-weight:600;
+    letter-spacing:.5px;
+}
+
+.btn-danger:hover{
+    background:linear-gradient(135deg,#ff5c33,#ff7a55);
+    transform:translateY(-1px);
+    box-shadow:0 6px 15px rgba(212,43,8,.3);
+}
+
+/* ============================= */
+/* TEAM CARDS */
+/* ============================= */
+
+.team-card{
+    background:#14171D;
+    border:1px solid #22262F;
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:12px;
+    cursor:pointer;
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+
+.team-card:hover{
+    transform:translateY(-4px);
+    border:1px solid #D42B08;
+    box-shadow:0 12px 30px rgba(212,43,8,.2);
+}
+
+.team-name{
+    font-size:12px;
+    color:#C5A059;
+    font-weight:600;
+}
+
+.team-count{
+    font-size:22px;
+    font-weight:700;
+    color:#C5A059;
+}
+
+/* ============================= */
+/* ACTION BUTTONS */
+/* ============================= */
+
+.action-btn{
+    border:none;
+    background:none;
+    color:#D42B08;
+}
+
+.action-btn:hover{
+    color:#ff5c33;
+}
+
+
+.team-card.active{
+    border:1px solid #D42B08;
+    box-shadow:0 0 25px rgba(212,43,8,.4);
+    transform:translateY(-3px);
+}
+
+
+/* Animación filas */
+#usersTable tbody tr{
+    transition: all .35s ease;
+}
+
+.row-hidden{
+    opacity:0;
+    transform:translateY(6px);
+    pointer-events:none;
+}
+
+.row-visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.team-card{
+    transition: all .3s ease;
+}
+
+.team-card.blur{
+    opacity:.35;
+    filter: blur(1px);
+    transform:scale(.97);
+}
+
+.team-card.active{
+    border:1px solid #D42B08;
+    box-shadow:0 0 25px rgba(212,43,8,.4);
+    transform:translateY(-3px) scale(1.02);
+}
+
+.team-indicator{
+    background:#141922;
+    border-left:4px solid #D42B08;
+    padding:10px 15px;
+    font-size:13px;
+    letter-spacing:1px;
+    color:#C5A059;
+    border-radius:6px;
+    animation: fadeInIndicator .3s ease;
+}
+
+@keyframes fadeInIndicator{
+    from{ opacity:0; transform:translateY(-5px);}
+    to{ opacity:1; transform:translateY(0);}
+}
+
+/* Contenedor estable para tabla */
+.table-container{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-gutter: stable;
+}
+
+/* Scroll horizontal limpio */
+.table-container::-webkit-scrollbar{
+    height:8px;
+}
+
+.table-container::-webkit-scrollbar-track{
+    background:#11151C;
+}
+
+.table-container::-webkit-scrollbar-thumb{
+    background:#2A2F3A;
+    border-radius:10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover{
+    background:#D42B08;
+}
+
+.team-indicator button{
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    border-radius:6px;
+    padding:4px 10px;
+}
+#usersTable{
+    table-layout: fixed;
+    width:100%;
+}
+
+/* ============================= */
+/* DROPDOWN COMPACTO + LEGIBLE */
+/* ============================= */
+
+.dropdown-menu{
+    background:#13151A !important;
+    border:1px solid #262A33 !important;
+    font-size:13px;
+    padding:10px 12px;
+}
+
+.dropdown-menu .form-check{
+    margin-bottom:8px;
+}
+
+.dropdown-menu .form-check-input{
+    width:15px;
+    height:15px;
+    margin-top:2px;
+    background-color:#0F141B;
+    border:1px solid #3A3F4A;
+}
+
+.dropdown-menu .form-check-input:checked{
+    background-color:#D42B08;
+    border-color:#D42B08;
+}
+
+.dropdown-menu label,
+.dropdown-menu span,
+.dropdown-menu li{
+    color:#FFFFFF !important;   /* 🔥 Ahora sí contraste fuerte */
+    font-weight:500;
+    letter-spacing:.3px;
+}
+
+.dropdown-menu li:hover{
+    background:#1A1F27;
+    border-radius:6px;
+}
+
+
+
+/* ============================= */
+/* FIX DROPDOWN TEXTO CORTADO */
+/* ============================= */
+
+.dropdown-menu{
+    min-width: 100% !important;
+    width: 100% !important;
+    white-space: normal !important;
+}
+
+.dropdown-menu .form-check{
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.dropdown-menu .form-check label,
+.dropdown-menu .form-check span{
+    white-space: normal !important;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.dropdown-menu li{
+    width: 100%;
+}
+
+/* ============================= */
+/* FIX LISTA ACCESOS COMPLETA */
+/* ============================= */
+
+.dropdown-menu {
+    min-width: 100%;
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 12px;
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-menu .form-check {
+    margin-bottom: 6px;
+}
+
+.dropdown-menu .form-check-input {
+    cursor: pointer;
+}
+
+.dropdown-menu .form-check-label {
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    z-index: 1055 !important;
+    max-height: 280px;
+    overflow-y: auto;
+}
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar-custom d-flex justify-content-between">
+<div class="d-flex align-items-center gap-2">
+<img src="{{ url_for('static', filename='TECH.png') }}" class="logo-img">
+<span>OKAI LAB</span>
+</div>
+<div class="d-flex gap-3">
+    <form action="{{ url_for('import_excel') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+    <input type="file" name="file" accept=".xlsx" required hidden id="excelInput">
+    <button type="button" class="btn btn-sm btn-outline-light" onclick="document.getElementById('excelInput').click()">
+        Importar
+    </button>
+</form>
+<a href="{{ url_for('export_excel') }}" class="btn btn-sm btn-outline-light">Exportar</a>
+
+<a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger">Cerrar sesión</a>
+</div>
+</nav>
+
+<div class="container py-5">
+
+<div class="row mb-4">
+<div class="col-md-4">
+<div class="kpi-card mb-3 d-flex justify-content-between align-items-center">
+<div>
+<div class="kpi-title">TOTAL USUARIOS</div>
+<div class="kpi-number">{{ total_users or 0 }}</div>
+</div>
+<div class="kpi-icon">
+<i class="bi bi-people-fill"></i>
+</div>
+</div>
+
+<div class="card-custom p-3">
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h6 class="mb-0 text-danger" style="font-size:13px;">Usuarios Eliminados</h6>
+<button class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size:11px;" onclick="clearDeleted()">Limpiar</button>
+</div>
+<div style="max-height:160px; overflow-y:auto;">
+<table class="table-oni" id="deletedTable">
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Usuario</th>
+<th>Fecha</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="col-md-8">
+<div class="card-custom">
+<h6 class="mb-3">Usuarios por Equipo</h6>
+
+<div class="row" id="teamCards"></div>
+
+
+</div>
+</div>
+
+</div>
+
+<!-- FORMULARIO REGISTRO -->
+<div class="card-custom mb-5">
+<h6 class="mb-4">Registrar Nuevo Usuario</h6>
+<form method="POST" action="{{ url_for('create_user') }}">
+<div class="row g-3">
+
+<div class="col-md-6">
+<label class="form-label">Nombre</label>
+<input type="text" name="nombre" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Usuario</label>
+<input type="text" name="usuario" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Correo</label>
+<input type="email" name="correo" class="form-control" required>
+</div>
+
+<div class="col-md-6">
+<label class="form-label">Equipo</label>
+
+<div class="dropdown w-100">
+<button class="form-control text-start d-flex justify-content-between align-items-center"
+        type="button"
+        id="equipoDropdown"
+        data-bs-toggle="dropdown">
+Seleccionar equipo
+<i class="bi bi-chevron-down"></i>
+</button>
+
+<ul class="dropdown-menu w-100 p-3"
+    style="background:#13151A; border:1px solid #262A33; max-height:250px; overflow-y:auto;">
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="BAS" required> BAS
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="DWH"> DWH
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="EOD"> EOD
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="IPC & MSTR"> IPC & MSTR
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="CRM"> CRM
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="SEGUROS"> SEGUROS
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="YASTAS"> YASTAS
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="SATELITES"> SATELITES
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="SOLUCIONES ESPECIALIZADAS"> SOLUCIONES ESPECIALIZADAS
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="BW"> BW
+</li>
+
+<li class="form-check mb-2">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="ERP PERSONAS"> ERP PERSONAS
+</li>
+
+<li class="form-check">
+<input class="form-check-input equipo-option" type="radio" name="equipo" value="ERP FINANZAS"> ERP FINANZAS
+</li>
+
+</ul>
+</div>
+</div>
+
+
+<div class="col-md-6">
+<label class="form-label">Jefe Directo</label>
+
+<div class="dropdown w-100">
+<button class="form-control text-start d-flex justify-content-between align-items-center"
+        type="button"
+        id="jefeDropdown"
+        data-bs-toggle="dropdown">
+Seleccionar jefe
+<i class="bi bi-chevron-down"></i>
+</button>
+
+<ul class="dropdown-menu w-100 p-3"
+    style="background:#13151A; border:1px solid #262A33; max-height:250px; overflow-y:auto;">
+
+<li class="mb-2">
+<label class="form-check d-flex align-items-center gap-2">
+<input class="form-check-input jefe-option" type="radio" name="jefe" value="JANHELI OLGUIN CASTILLO" required>
+<span>JANHELI OLGUIN CASTILLO</span>
+</label>
+</li>
+
+<li class="mb-2">
+<label class="form-check d-flex align-items-center gap-2">
+<input class="form-check-input jefe-option" type="radio" name="jefe" value="LUIS ALBERTO SOLIS RAMOS">
+<span>LUIS ALBERTO SOLIS RAMOS</span>
+</label>
+</li>
+
+<li class="mb-2">
+<label class="form-check d-flex align-items-center gap-2">
+<input class="form-check-input jefe-option" type="radio" name="jefe" value="JOSE ANTONIO HERNANDEZ ANGELES">
+<span>JOSE ANTONIO HERNANDEZ ANGELES</span>
+</label>
+</li>
+
+<li>
+<label class="form-check d-flex align-items-center gap-2">
+<input class="form-check-input jefe-option" type="radio" name="jefe" value="FERNANDO ARELLANO RAMA">
+<span>FERNANDO ARELLANO RAMA</span>
+</label>
+</li>
+
+</ul>
+</div>
+</div>
+
+
+<div class="col-md-6">
+<label class="form-label">Accesos</label>
+<div class="dropdown w-100">
+<button class="form-control text-start d-flex justify-content-between align-items-center"
+        type="button"
+        data-bs-toggle="dropdown">
+Seleccionar accesos
+<i class="bi bi-chevron-down"></i>
+</button>
+
+<ul class="dropdown-menu p-3" data-bs-auto-close="outside">
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="VPN" name="accesos" id="acceso_vpn">
+      <label class="form-check-label" for="acceso_vpn">VPN</label>
+    </div>
+  </li>
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="SAP" name="accesos" id="acceso_sap">
+      <label class="form-check-label" for="acceso_sap">SAP</label>
+    </div>
+  </li>
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="HELIX" name="accesos" id="acceso_helix">
+      <label class="form-check-label" for="acceso_helix">HELIX</label>
+    </div>
+  </li>
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="DIRECTORIO ACTIVO" name="accesos" id="acceso_ad">
+      <label class="form-check-label" for="acceso_ad">DIRECTORIO ACTIVO</label>
+    </div>
+  </li>
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="HANA" name="accesos" id="acceso_hana">
+      <label class="form-check-label" for="acceso_hana">HANA</label>
+    </div>
+  </li>
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="IPC" name="accesos" id="acceso_ipc">
+      <label class="form-check-label" for="acceso_ipc">IPC</label>
+    </div>
+  </li>
+
+  <li>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="GCP" name="accesos" id="acceso_gcp">
+      <label class="form-check-label" for="acceso_gcp">GCP</label>
+    </div>
+  </li>
+
+</ul>
+</div>
+</div>
+
+<div class="col-12 text-end">
+<button type="submit" class="btn btn-danger px-4">
+<i class="bi bi-plus-circle"></i> Registrar Usuario
+</button>
+</div>
+
+</div>
+</form>
+</div>
+
+<!-- TABLA PRINCIPAL (tu código original intacto) -->
+<!-- TABLA PRINCIPAL -->
+<div id="teamIndicator" class="team-indicator mb-3 d-flex justify-content-between align-items-center" style="display:none;">
+    <span>
+        Mostrando equipo: <strong id="activeTeamName"></strong>
+    </span>
+
+    <button onclick="clearTeamFilter()" class="btn btn-sm btn-outline-light">
+        Quitar filtro
+    </button>
+</div>
+
+<div class="card-custom mb-5">
+
+<div class="table-container"> <!-- 🔥 AHORA AQUÍ -->
+<table class="table-oni" id="usersTable">
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Usuario</th>
+<th>Correo</th>
+<th onclick="sortTableByEquipo()" style="cursor:pointer;">
+Equipo <i class="bi bi-arrow-down-up"></i>
+</th>
+<th>Jefe</th>
+<th>Accesos</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody>
+{% for user in users %}
+<tr>
+<td>{{ user.nombre }}</td>
+<td>{{ user.usuario }}</td>
+<td>{{ user.correo }}</td>
+<td>{{ user.equipo }}</td>
+<td>{{ user.jefe }}</td>
+<td>
+{% if user.accesos %}
+{% for acc in user.accesos.split(",") %}
+<span class="badge-access">{{ acc.strip() }}</span>
+{% endfor %}
+{% endif %}
+</td>
+<td>
+<a href="{{ url_for('edit_user', id=user.id) }}" class="action-btn">
+<i class="bi bi-pencil-square"></i>
+</a>
+<button type="button" class="action-btn ms-2" onclick="deleteRow(this, {{ user.id }})">
+<i class="bi bi-trash"></i>
+</button>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+</div>
+<script>
+
+/* ELIMINAR */
+
+
+/* LIMPIAR */
+function clearDeleted(){
+if(confirm("¿Vaciar tabla de eliminados?")){
+document.querySelector("#deletedTable tbody").innerHTML="";
+}
+}
+
+</script>
+
+
+<script>
+
+/* ==============================
+   ELIMINAR USUARIO DEFINITIVO
+   ============================== */
+
+function deleteRow(btn, userId){
+
+    if(!confirm("¿Seguro que deseas eliminar este usuario definitivamente?")) return;
+
+    fetch(`/delete_user/${userId}`, {
+        method: "POST"
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.success){
+
+            let row = btn.closest("tr");
+
+            let nombre = row.cells[0].innerText;
+            let usuario = row.cells[1].innerText;
+
+            row.remove();
+
+            addDeletedUser({
+                nombre,
+                usuario,
+                fecha: new Date().toLocaleString("es-MX")
+            });
+
+            updateTotalUsers();
+
+        } else {
+            alert("Error al eliminar usuario");
+        }
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error de servidor");
+    });
+}
+
+
+/* ==============================
+   AGREGAR A LOCALSTORAGE
+   ============================== */
+
+function addDeletedUser(user){
+
+    let deletedUsers = JSON.parse(localStorage.getItem("deletedUsers")) || [];
+
+    deletedUsers.unshift(user); // más reciente arriba
+
+    localStorage.setItem("deletedUsers", JSON.stringify(deletedUsers));
+
+    renderDeletedUsers();
+}
+
+
+/* ==============================
+   RENDER TABLA ELIMINADOS
+   ============================== */
+
+function renderDeletedUsers(){
+
+    const tbody = document.querySelector("#deletedTable tbody");
+    tbody.innerHTML = "";
+
+    let deletedUsers = JSON.parse(localStorage.getItem("deletedUsers")) || [];
+
+    deletedUsers.forEach(user => {
+
+        const row = tbody.insertRow();
+
+        row.insertCell(0).innerText = user.nombre;
+        row.insertCell(1).innerText = user.usuario;
+        row.insertCell(2).innerText = user.fecha;
+
+    });
+}
+
+
+/* ==============================
+   CONTADOR EN TIEMPO REAL
+   ============================== */
+
+function updateTotalUsers(){
+    const totalElement = document.querySelector(".kpi-number");
+    const rows = document.querySelectorAll("#usersTable tbody tr");
+    totalElement.innerText = rows.length;
+}
+
+
+/* ==============================
+   LIMPIAR ELIMINADOS
+   ============================== */
+
+function clearDeleted(){
+    if(confirm("¿Vaciar tabla de eliminados?")){
+        localStorage.removeItem("deletedUsers");
+        renderDeletedUsers();
+    }
+}
+
+
+/* ==============================
+   CARGAR AL INICIAR
+   ============================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderDeletedUsers();
+    updateTotalUsers();
+});
+
+</script>
+
+<script>
+
+/* ==============================
+   ORDENAR TABLA POR EQUIPO (A-Z)
+   ============================== */
+
+function sortTableByEquipo(){
+
+    const table = document.getElementById("usersTable");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+
+        const equipoA = a.cells[3].innerText.trim().toLowerCase();
+        const equipoB = b.cells[3].innerText.trim().toLowerCase();
+
+        return equipoA.localeCompare(equipoB, 'es', { sensitivity: 'base' });
+
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+
+/* ORDENAR AUTOMÁTICAMENTE AL CARGAR */
+
+document.addEventListener("DOMContentLoaded", function(){
+    sortTableByEquipo();
+});
+
+</script>
+
+<script>
+
+/* Mostrar equipo seleccionado en botón */
+
+document.querySelectorAll(".equipo-option").forEach(option => {
+    option.addEventListener("change", function(){
+        document.getElementById("equipoDropdown").innerHTML =
+            this.value + ' <i class="bi bi-chevron-down"></i>';
+    });
+});
+
+</script>
+<script>
+
+/* ==============================
+   MOSTRAR JEFE SELECCIONADO
+   ============================== */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    document.querySelectorAll(".jefe-option").forEach(option => {
+
+        option.addEventListener("change", function(){
+
+            const button = document.getElementById("jefeDropdown");
+
+            button.innerHTML =
+                this.value + ' <i class="bi bi-chevron-down"></i>';
+
+            // Cerrar dropdown automáticamente
+            const dropdown = bootstrap.Dropdown.getOrCreateInstance(button);
+            dropdown.hide();
+
+        });
+
+    });
+
+});
+
+</script>
+<script>
+
+/* ==============================
+   ICONOS POR EQUIPO
+   ============================== */
+
+function getTeamIcon(equipo){
+
+    const icons = {
+        "BAS": "bi-cpu",
+        "DWH": "bi-database",
+        "EOD": "bi-clock-history",
+        "IPC & MSTR": "bi-diagram-3",
+        "CRM": "bi-people",
+        "SEGUROS": "bi-shield-lock",
+        "YASTAS": "bi-lightning",
+        "SATELITES": "bi-broadcast",
+        "SOLUCIONES ESPECIALIZADAS": "bi-gear",
+        "BW": "bi-bar-chart",
+        "ERP PERSONAS": "bi-person-badge",
+        "ERP FINANZAS": "bi-cash-stack"
+    };
+
+    return icons[equipo] || "bi-grid";
+}
+
+
+/* ==============================
+   GENERAR TARJETAS ENTERPRISE
+   ============================== */
+
+function generateTeamCards(){
+
+    const rows = document.querySelectorAll("#usersTable tbody tr");
+    const container = document.getElementById("teamCards");
+
+    let equipos = {};
+
+    rows.forEach(row => {
+        let equipo = row.cells[3].innerText.trim();
+        if(equipo){
+            equipos[equipo] = (equipos[equipo] || 0) + 1;
+        }
+    });
+
+    container.innerHTML = "";
+
+    Object.keys(equipos)
+        .sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}))
+        .forEach(equipo => {
+
+            const col = document.createElement("div");
+            col.className = "col-md-4";
+
+            col.innerHTML = `
+                <div class="team-card" onclick="filterByTeam('${equipo}')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="team-name">
+                            <i class="bi ${getTeamIcon(equipo)} me-2"></i>
+                            ${equipo}
+                        </div>
+                        <div class="team-count" data-count="${equipos[equipo]}">0</div>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(col);
+        });
+
+    animateCounters();
+}
+
+
+/* ==============================
+   ANIMACIÓN CONTADOR
+   ============================== */
+
+function animateCounters(){
+
+    document.querySelectorAll(".team-count").forEach(counter => {
+
+        const target = +counter.getAttribute("data-count");
+        let current = 0;
+
+        const increment = target / 20;
+
+        const update = () => {
+            current += increment;
+            if(current < target){
+                counter.innerText = Math.ceil(current);
+                requestAnimationFrame(update);
+            } else {
+                counter.innerText = target;
+            }
+        };
+
+        update();
+    });
+}
+
+
+/* ==============================
+   FILTRAR POR EQUIPO
+   ============================== */
+
+function filterByTeam(equipo){
+
+    const rows = document.querySelectorAll("#usersTable tbody tr");
+    const cards = document.querySelectorAll(".team-card");
+    const indicator = document.getElementById("teamIndicator");
+    const activeName = document.getElementById("activeTeamName");
+
+    rows.forEach(row => {
+
+        const rowEquipo = row.cells[3].innerText.trim();
+
+        if(rowEquipo === equipo){
+            row.style.display = "";
+            row.classList.remove("row-hidden");
+            row.classList.add("row-visible");
+        }else{
+            row.classList.remove("row-visible");
+            row.classList.add("row-hidden");
+
+            setTimeout(()=>{
+                row.style.display = "none";
+            },300);
+        }
+
+    });
+
+    cards.forEach(card => {
+        card.classList.remove("active");
+        card.classList.add("blur");
+
+        if(card.innerText.includes(equipo)){
+            card.classList.add("active");
+            card.classList.remove("blur");
+        }
+    });
+
+    indicator.style.display = "block";
+    activeName.innerText = equipo;
+}
+
+
+/* ==============================
+   LIMPIAR FILTRO
+   ============================== */
+
+function clearTeamFilter(){
+
+    const rows = document.querySelectorAll("#usersTable tbody tr");
+    const cards = document.querySelectorAll(".team-card");
+    const indicator = document.getElementById("teamIndicator");
+    const activeName = document.getElementById("activeTeamName");
+
+    // Restaurar filas completamente
+    rows.forEach(row => {
+        row.style.display = "";
+        row.classList.remove("row-hidden");
+        row.classList.remove("row-visible");
+    });
+
+    // Restaurar tarjetas
+    cards.forEach(card => {
+        card.classList.remove("blur");
+        card.classList.remove("active");
+    });
+
+    // Ocultar indicador y limpiar texto
+    indicator.style.display = "none";
+    activeName.innerText = "";
+
+    // Volver a ordenar como estaba al inicio
+    sortTableByEquipo();
+}
+
+/* ==============================
+   CARGAR TARJETAS AL INICIAR
+   ============================== */
+
+document.addEventListener("DOMContentLoaded", function(){
+    generateTeamCards();
+});
+
+
+</script>
+<script>
+document.getElementById("excelInput").addEventListener("change", function(){
+
+    if(confirm("Esto reemplazará todos los usuarios actuales. ¿Continuar?")){
+        this.form.submit();
+    }else{
+        this.value = "";
+    }
+
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
