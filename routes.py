@@ -10,7 +10,8 @@ from openpyxl.utils import get_column_letter
 import requests
 import os
 import io
-
+import pandas as pd
+from flask import flash
 
 # =========================
 # LOGIN MANAGER
@@ -283,10 +284,14 @@ def export_excel():
         download_name="Reporte_Usuarios_Corporativo.xlsx",
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-
+   # -------------------------
+    # IMPORTAR EXCEL
+    # -------------------------
 
 @app.route("/import_excel", methods=["POST"])
+@login_required
 def import_excel():
+    
 
     file = request.files.get("file")
 
@@ -324,11 +329,3 @@ def import_excel():
 
     return redirect(url_for("dashboard"))
 
-@app.route("/bienvenida")
-@login_required
-def bienvenida():
-    return render_template(
-        "bienvenida.html",
-        usuario=current_user.username,
-        role=current_user.role
-    )
