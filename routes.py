@@ -291,9 +291,6 @@ def export_excel():
 @login_required
 def import_excel():
 
-    if current_user.role != "admin":
-        return redirect(url_for("dashboard"))
-
     file = request.files.get("file")
 
     if not file:
@@ -304,17 +301,14 @@ def import_excel():
         wb = load_workbook(file)
         ws = wb.active
 
-        # Leer encabezados
         headers = [cell.value for cell in ws[1]]
+        print("HEADERS:", headers)
 
-        # Opcional: limpiar tabla
-        User.query.delete()
-        db.session.commit()
+        count = 0
 
-        # Recorrer filas (desde la fila 2)
         for row in ws.iter_rows(min_row=2, values_only=True):
-
             data = dict(zip(headers, row))
+            print("ROW DATA:", data)
 
             new_user = User(
                 nombre=str(data.get("Nombre", "")).strip(),
@@ -327,10 +321,12 @@ def import_excel():
             )
 
             db.session.add(new_user)
+            count += 1
 
         db.session.commit()
 
-        flash("Usuarios importados correctamente")
+        print("TOTAL IMPORTADOS:", count)
+        flash(f"{count} usuarios importados correctamente")
 
     except Exception as e:
         print("ERROR IMPORT:", e)
