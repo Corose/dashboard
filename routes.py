@@ -10,7 +10,6 @@ from openpyxl.utils import get_column_letter
 import requests
 import os
 import io
-import pandas as pd
 from flask import flash
 
 # =========================
@@ -291,7 +290,9 @@ def export_excel():
 @app.route("/import_excel", methods=["POST"])
 @login_required
 def import_excel():
-    
+
+    if current_user.role != "admin":
+        return redirect(url_for("dashboard"))
 
     file = request.files.get("file")
 
@@ -300,21 +301,29 @@ def import_excel():
         return redirect(url_for("dashboard"))
 
     try:
-        df = pd.read_excel(file)
+        wb = load_workbook(file)
+        ws = wb.active
 
-        # 🔥 OPCIONAL: limpiar tabla antes de importar
+        # Leer encabezados
+        headers = [cell.value for cell in ws[1]]
+
+        # Opcional: limpiar tabla
         User.query.delete()
         db.session.commit()
 
-        for _, row in df.iterrows():
+        # Recorrer filas (desde la fila 2)
+        for row in ws.iter_rows(min_row=2, values_only=True):
+
+            data = dict(zip(headers, row))
 
             new_user = User(
-                nombre=row.get("Nombre", ""),
-                usuario=row.get("Usuario", ""),
-                correo=row.get("Correo", ""),
-                equipo=row.get("Equipo", ""),
-                jefe=row.get("Jefe", ""),
-                accesos=row.get("Accesos", "")
+                nombre=str(data.get("Nombre", "")).strip(),
+                usuario=str(data.get("Usuario", "")).strip(),
+                correo=str(data.get("Correo", "")).strip(),
+                equipo=str(data.get("Equipo", "")).strip(),
+                jefe=str(data.get("Jefe", "")).strip(),
+                accesos=str(data.get("Accesos", "")).strip(),
+                activo=True
             )
 
             db.session.add(new_user)
@@ -324,8 +333,7 @@ def import_excel():
         flash("Usuarios importados correctamente")
 
     except Exception as e:
-        print(e)
+        print("ERROR IMPORT:", e)
         flash("Error al importar archivo")
 
     return redirect(url_for("dashboard"))
-
