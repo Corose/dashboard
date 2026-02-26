@@ -1,18 +1,16 @@
 from app import app, login_manager
-from flask import render_template, redirect, request, url_for, send_file
+from flask import render_template, redirect, request, url_for, send_file, flash
 from models import db, User, AuthUser, Vacacion
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash
 from sqlalchemy import func
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
+from datetime import date
 import requests
 import os
 import io
-from flask import flash
-from openpyxl import load_workbook
-from datetime import date
 
 # =========================
 # LOGIN MANAGER
@@ -28,21 +26,17 @@ def load_user(user_id):
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
-    # 🔒 Si ya está autenticado, no puede volver al login
     if current_user.is_authenticated:
         return redirect(url_for("dashboard"))
 
     if request.method == "POST":
-
         username = request.form.get("username")
         password = request.form.get("password")
 
         user = AuthUser.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password, password):
-
             login_user(user)
-
             return redirect(url_for("loading"))
 
         return render_template(
@@ -53,15 +47,14 @@ def login():
     return render_template("login.html")
 
 
-
 # =========================
-# CRAGANDO...
+# LOADING
 # =========================
-
 @app.route("/loading")
 @login_required
 def loading():
     return render_template("loading.html")
+
 
 # =========================
 # LOGOUT
@@ -92,14 +85,15 @@ def dashboard():
     ).group_by(User.equipo).all()
 
     return render_template(
-    "dashboard.html",
-    users=users,
-    total_users=total_users,
-    activos=activos,
-    inactivos=inactivos,
-    equipos=equipos,
-    current_user=current_user
-)
+        "dashboard.html",
+        users=users,
+        total_users=total_users,
+        activos=activos,
+        inactivos=inactivos,
+        equipos=equipos,
+        current_user=current_user
+    )
+
 
 # =========================
 # CREAR USUARIO
@@ -137,26 +131,6 @@ def create_user():
 
 
 # =========================
-# ELIMINAR USUARIO
-# =========================
-@app.route("/delete_user/<int:id>", methods=["POST"])
-def delete_user(id):
-    user = User.query.get(id)
-    if user:
-        deleted_data = {
-            "success": True,
-            "nombre": user.nombre,
-            "usuario": user.usuario
-        }
-        db.session.delete(user)
-        db.session.commit()
-        return deleted_data
-
-    return {"success": False}, 404
-
-
-
-# =========================
 # EDITAR USUARIO
 # =========================
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -169,7 +143,6 @@ def edit_user(id):
     user = User.query.get_or_404(id)
 
     if request.method == "POST":
-
         user.nombre = request.form["nombre"]
         user.usuario = request.form["usuario"]
         user.correo = request.form["correo"]
@@ -186,6 +159,41 @@ def edit_user(id):
 
 
 # =========================
+# ELIMINAR USUARIO (ADMIN ONLY)
+# =========================
+@app.route("/delete_user/<int:id>", methods=["POST"])
+@login_required
+def delete_user(id):
+
+    if current_user.role != "admin":
+        return {"success": False}, 403
+
+    user = User.query.get(id)
+
+    if not user:
+        return {"success": False}, 404
+
+    try:
+        # Eliminar vacaciones relacionadas primero
+        Vacacion.query.filter_by(user_id=user.id).delete()
+
+        deleted_data = {
+            "success": True,
+            "nombre": user.nombre,
+            "usuario": user.usuario
+        }
+
+        db.session.delete(user)
+        db.session.commit()
+
+        return deleted_data
+
+    except Exception as e:
+        db.session.rollback()
+        return {"success": False, "error": str(e)}, 500
+
+
+# =========================
 # EXPORTAR EXCEL
 # =========================
 @app.route("/export-excel")
@@ -196,34 +204,23 @@ def export_excel():
         return redirect(url_for("dashboard"))
 
     users = User.query.all()
-
     wb = Workbook()
 
-    # -------------------------
-    # HOJA 1 - LISTADO
-    # -------------------------
+    # HOJA 1
     ws = wb.active
     ws.title = "Usuarios"
 
     headers = [
-        "ID",
-        "Nombre",
-        "Usuario",
-        "Correo",
-        "Equipo",
-        "Jefe",
-        "Accesos",
-        "Comentarios",
-        "Fecha Creación"
+        "ID", "Nombre", "Usuario", "Correo",
+        "Equipo", "Jefe", "Accesos",
+        "Comentarios", "Fecha Creación"
     ]
 
     ws.append(headers)
 
-    header_fill = PatternFill(
-        start_color="1F4E78",
-        end_color="1F4E78",
-        fill_type="solid"
-    )
+    header_fill = PatternFill(start_color="1F4E78",
+                              end_color="1F4E78",
+                              fill_type="solid")
 
     header_font = Font(color="FFFFFF", bold=True)
 
@@ -247,33 +244,10 @@ def export_excel():
         ])
 
     for column_cells in ws.columns:
-        length = max(len(str(cell.value)) if cell.value else 0 for cell in column_cells)
+        length = max(len(str(cell.value)) if cell.value else 0
+                     for cell in column_cells)
         col_letter = get_column_letter(column_cells[0].column)
         ws.column_dimensions[col_letter].width = length + 2
-
-    # -------------------------
-    # HOJA 2 - ESTADÍSTICAS
-    # -------------------------
-    stats_ws = wb.create_sheet(title="Estadísticas")
-    stats_ws.append(["Equipo", "Cantidad de Usuarios"])
-
-    stats_ws["A1"].fill = header_fill
-    stats_ws["A1"].font = header_font
-    stats_ws["B1"].fill = header_fill
-    stats_ws["B1"].font = header_font
-
-    equipos = db.session.query(
-        User.equipo,
-        func.count(User.id)
-    ).group_by(User.equipo).all()
-
-    for equipo, cantidad in equipos:
-        stats_ws.append([equipo, cantidad])
-
-    for column_cells in stats_ws.columns:
-        length = max(len(str(cell.value)) if cell.value else 0 for cell in column_cells)
-        col_letter = get_column_letter(column_cells[0].column)
-        stats_ws.column_dimensions[col_letter].width = length + 2
 
     output = io.BytesIO()
     wb.save(output)
@@ -285,10 +259,11 @@ def export_excel():
         download_name="Reporte_Usuarios_Corporativo.xlsx",
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-   # -------------------------
-    # IMPORTAR EXCEL
-    # -------------------------
 
+
+# =========================
+# IMPORTAR EXCEL
+# =========================
 @app.route("/import_excel", methods=["POST"])
 @login_required
 def import_excel():
@@ -304,13 +279,10 @@ def import_excel():
         ws = wb.active
 
         headers = [cell.value for cell in ws[1]]
-        print("HEADERS:", headers)
-
         count = 0
 
         for row in ws.iter_rows(min_row=2, values_only=True):
             data = dict(zip(headers, row))
-            print("ROW DATA:", data)
 
             new_user = User(
                 nombre=str(data.get("Nombre", "")).strip(),
@@ -326,32 +298,28 @@ def import_excel():
             count += 1
 
         db.session.commit()
-
-        print("TOTAL IMPORTADOS:", count)
         flash(f"{count} usuarios importados correctamente")
 
     except Exception as e:
-        print("ERROR IMPORT:", e)
+        db.session.rollback()
         flash("Error al importar archivo")
 
     return redirect(url_for("dashboard"))
 
-# =========================
-# VISTA VACACIONES
-# =========================
 
+# =========================
+# VACACIONES
+# =========================
 @app.route("/vacaciones")
 @login_required
 def vacaciones_view():
 
     hoy = date.today()
 
-    # Todas las solicitudes
     vacaciones = Vacacion.query.order_by(
         Vacacion.created_at.desc()
     ).all()
 
-    # Usuarios actualmente de vacaciones
     usuarios_vacaciones = db.session.query(User).join(Vacacion).filter(
         Vacacion.estado == "Aprobado",
         Vacacion.fecha_inicio <= hoy,
@@ -363,38 +331,3 @@ def vacaciones_view():
         vacaciones=vacaciones,
         usuarios_vacaciones=usuarios_vacaciones
     )
-
-
-# =========================
-# ELIMINAR TODOS LOS USUARIOS (POSTGRES)
-# =========================
-@app.route("/delete_user/<int:id>", methods=["POST"])
-@login_required
-def delete_user(id):
-
-    if current_user.role != "admin":
-        return {"success": False}, 403
-
-    user = User.query.get(id)
-
-    if not user:
-        return {"success": False}, 404
-
-    try:
-        # Primero eliminar vacaciones relacionadas
-        Vacacion.query.filter_by(user_id=user.id).delete()
-
-        deleted_data = {
-            "success": True,
-            "nombre": user.nombre,
-            "usuario": user.usuario
-        }
-
-        db.session.delete(user)
-        db.session.commit()
-
-        return deleted_data
-
-    except Exception as e:
-        db.session.rollback()
-        return {"success": False, "error": str(e)}, 500
