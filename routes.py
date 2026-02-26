@@ -379,9 +379,8 @@ def solicitar_vacaciones():
         if user.dias_vacaciones < dias:
             flash("El empleado no tiene suficientes días disponibles")
             return redirect(url_for("vacaciones_view"))
-        
 
-# Descontar días
+        # 🔵 DESCONTAR SOLO UNA VEZ
         user.dias_vacaciones -= dias
 
         nueva = Vacacion(
@@ -393,9 +392,6 @@ def solicitar_vacaciones():
             registrado_por=current_user.username,
             anio=fecha_inicio.year
         )
-
-        # 🔵 Descontar días
-        user.dias_vacaciones -= dias
 
         db.session.add(nueva)
         db.session.commit()
