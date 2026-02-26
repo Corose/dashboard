@@ -144,7 +144,7 @@
                         {% if current_user.role == "admin" %}
                         <td>
                             <!-- ✏ Editar -->
-                            <a href="{{ url_for('editar_vacacion', id=v.id) }}" 
+                            <a href="{{ url_for('edit_vacacion', id=v.id) }}"
                                class="btn btn-warning btn-sm">
                                ✏
                             </a>
