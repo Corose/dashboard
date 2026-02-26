@@ -542,6 +542,14 @@ body {
 
 <!-- FORMULARIO REGISTRO -->
 <div class="card-custom mb-5">
+
+    <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm btn-outline-danger"
+            onclick="deleteAllUsers()">
+        <i class="bi bi-trash3-fill"></i>
+        Borrar Todos los Usuarios
+    </button>
+</div>
 <h6 class="mb-4">Registrar Nuevo Usuario</h6>
 <form method="POST" action="{{ url_for('create_user') }}">
 <div class="row g-3">
@@ -1217,5 +1225,47 @@ document.getElementById("excelInput").addEventListener("change", function(){
 
 });
 </script>
+<script>
 
+/* ==============================
+   ELIMINAR TODOS LOS USUARIOS
+   ============================== */
+
+function deleteAllUsers(){
+
+    if(!confirm("⚠️ Esto eliminará TODOS los usuarios y reiniciará los IDs a 1.\n\n¿Deseas continuar?")){
+        return;
+    }
+
+    fetch("/delete_all_users", {
+        method: "POST"
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.success){
+
+            // Vaciar tabla visualmente
+            document.querySelector("#usersTable tbody").innerHTML = "";
+
+            // Reset KPI
+            document.querySelector(".kpi-number").innerText = "0";
+
+            // Regenerar tarjetas
+            generateTeamCards();
+
+            alert("Todos los usuarios fueron eliminados y los IDs reiniciados.");
+
+        } else {
+            alert("Error al eliminar usuarios.");
+        }
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error de servidor.");
+    });
+}
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
