@@ -66,22 +66,13 @@
                     </div>
 
                     <!-- Fecha inicio -->
-                    <div class="col-md-3">
-                        <label class="form-label">Fecha Inicio</label>
-                        <input type="date" name="fecha_inicio" class="form-control" required>
-                    </div>
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
 
                     <!-- Fecha fin -->
-                    <div class="col-md-3">
-                        <label class="form-label">Fecha Fin</label>
-                        <input type="date" name="fecha_fin" class="form-control" required>
-                    </div>
+                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
 
-                    <!-- Días -->
-                    <div class="col-md-3">
-                        <label class="form-label">Días</label>
-                        <input type="number" name="dias" class="form-control" required>
-                    </div>
+                <!-- Días -->
+                    <input type="number" name="dias" id="dias" class="form-control" required readonly>
 
                 </div>
 
@@ -188,4 +179,32 @@ function eliminarVacacion(id) {
 }
 </script>
 
+
+
+<script>
+function calcularDias() {
+    const inicio = document.getElementById("fecha_inicio").value;
+    const fin = document.getElementById("fecha_fin").value;
+
+    if (!inicio || !fin) return;
+
+    const fechaInicio = new Date(inicio);
+    const fechaFin = new Date(fin);
+
+    if (fechaFin < fechaInicio) {
+        alert("La fecha fin no puede ser menor que la fecha inicio");
+        document.getElementById("fecha_fin").value = "";
+        document.getElementById("dias").value = "";
+        return;
+    }
+
+    const diferencia = fechaFin - fechaInicio;
+    const dias = (diferencia / (1000 * 60 * 60 * 24)) + 1;
+
+    document.getElementById("dias").value = dias;
+}
+
+document.getElementById("fecha_inicio").addEventListener("change", calcularDias);
+document.getElementById("fecha_fin").addEventListener("change", calcularDias);
+</script>
 {% endblock %}
