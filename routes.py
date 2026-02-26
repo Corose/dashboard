@@ -331,3 +331,27 @@ def vacaciones_view():
         vacaciones=vacaciones,
         usuarios_vacaciones=usuarios_vacaciones
     )
+# =========================
+# ELIMINAR TODOS LOS USUARIOS (ADMIN ONLY)
+# =========================
+@app.route("/delete_all_users", methods=["POST"])
+@login_required
+def delete_all_users():
+
+    if current_user.role != "admin":
+        return {"success": False}, 403
+
+    try:
+        # Primero eliminar vacaciones
+        Vacacion.query.delete()
+
+        # Luego eliminar usuarios
+        User.query.delete()
+
+        db.session.commit()
+
+        return {"success": True}
+
+    except Exception as e:
+        db.session.rollback()
+        return {"success": False, "error": str(e)}, 500
