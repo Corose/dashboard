@@ -1,6 +1,6 @@
 from app import app, login_manager
 from flask import render_template, redirect, request, url_for, send_file
-from models import db, User, AuthUser
+from models import db, User, AuthUser, Vacacion
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash
 from sqlalchemy import func
