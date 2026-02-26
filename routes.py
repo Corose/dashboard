@@ -391,7 +391,7 @@ def solicitar_vacaciones():
         )
 
         # 🔵 Descontar días
-        user.dias_disponibles -= dias
+        user.dias_vacaciones -= dias
 
         db.session.add(nueva)
         db.session.commit()
