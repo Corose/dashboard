@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Editar Vacación</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+                    <label class="form-label">Fecha Inicio</label>
+                    <input type="date" name="fecha_inicio"
+                           value="{{ vacacion.fecha_inicio }}"
+                           class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Fecha Fin</label>
+                    <input type="date" name="fecha_fin"
+                           value="{{ vacacion.fecha_fin }}"
+                           class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Días</label>
+                    <input type="number" name="dias"
+                           value="{{ vacacion.dias_solicitados }}"
+                           class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Guardar Cambios
+                </button>
+
+                <a href="{{ url_for('vacaciones') }}"
+                   class="btn btn-secondary">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
