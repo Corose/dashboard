@@ -364,26 +364,8 @@ def vacaciones_view():
         usuarios_vacaciones=usuarios_vacaciones
     )
 
+
 # =========================
-# ELIMINAR TODOS LOS USUARIOS (¡CUIDADO!)
-# =========================
-from flask import jsonify
-from app import db
-
-@app.route("/delete_all_users", methods=["POST"])
-def delete_all_users():
-    try:
-        db.session.execute("TRUNCATE TABLE user RESTART IDENTITY CASCADE;")
-        db.session.commit()
-
-        return jsonify({"success": True})
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"success": False, "error": str(e)})
-    
-
-    # =========================
 # ELIMINAR TODOS LOS USUARIOS (POSTGRES)
 # =========================
 from flask import jsonify
@@ -392,16 +374,11 @@ from flask import jsonify
 @login_required
 def delete_all_users():
 
-    # 🔒 Solo admin puede hacerlo
     if current_user.role != "admin":
         return jsonify({"success": False, "error": "No autorizado"}), 403
 
     try:
-        # ⚠️ Si tu tabla se llama "users" usa esto:
-        db.session.execute('TRUNCATE TABLE users RESTART IDENTITY CASCADE;')
-
-        # ⚠️ Si tu tabla se llama diferente, cambia "users"
-
+        db.session.execute('TRUNCATE TABLE "user" RESTART IDENTITY CASCADE;')
         db.session.commit()
 
         return jsonify({"success": True})

@@ -22,6 +22,7 @@ class User(db.Model):
     comentarios = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=db.func.now())
     activo = db.Column(db.Boolean, default=True)
+    dias_vacaciones = db.Column(db.Integer, default=12)
 
 from datetime import datetime
 

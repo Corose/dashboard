@@ -543,6 +543,10 @@ body {
 <!-- FORMULARIO REGISTRO -->
 <div class="card-custom mb-5">
 
+
+<h6 class="mb-4">Registrar Nuevo Usuario</h6>
+<form method="POST" action="{{ url_for('create_user') }}">
+<div class="row g-3">
     <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-sm btn-outline-danger"
             onclick="deleteAllUsers()">
@@ -550,10 +554,6 @@ body {
         Borrar Todos los Usuarios
     </button>
 </div>
-<h6 class="mb-4">Registrar Nuevo Usuario</h6>
-<form method="POST" action="{{ url_for('create_user') }}">
-<div class="row g-3">
-
 <div class="col-md-6">
 <label class="form-label">Nombre</label>
 <input type="text" name="nombre" class="form-control" required>
