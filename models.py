@@ -22,3 +22,21 @@ class User(db.Model):
     comentarios = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=db.func.now())
     activo = db.Column(db.Boolean, default=True)
+
+from datetime import datetime
+
+class Vacacion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref="vacaciones")
+
+    fecha_inicio = db.Column(db.Date, nullable=False)
+    fecha_fin = db.Column(db.Date, nullable=False)
+
+    dias_solicitados = db.Column(db.Integer)
+
+    estado = db.Column(db.String(20), default="Pendiente")  
+    # Pendiente / Aprobado / Rechazado
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)

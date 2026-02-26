@@ -479,6 +479,9 @@ body {
 <span>OKAI LAB</span>
 </div>
 <div class="d-flex gap-3">
+    <a href="{{ url_for('vacaciones_view') }}" class="nav-link">
+    Vacaciones
+</a>
     <form action="{{ url_for('import_excel') }}" method="POST" enctype="multipart/form-data" class="d-inline">
     <input type="file" name="file" accept=".xlsx" required hidden id="excelInput">
     <button type="button" class="btn btn-sm btn-outline-light" onclick="document.getElementById('excelInput').click()">

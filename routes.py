@@ -12,6 +12,7 @@ import os
 import io
 from flask import flash
 from openpyxl import load_workbook
+from datetime import date
 
 # =========================
 # LOGIN MANAGER
@@ -334,3 +335,31 @@ def import_excel():
         flash("Error al importar archivo")
 
     return redirect(url_for("dashboard"))
+
+# =========================
+# VISTA VACACIONES
+# =========================
+
+@app.route("/vacaciones")
+@login_required
+def vacaciones_view():
+
+    hoy = date.today()
+
+    # Todas las solicitudes
+    vacaciones = Vacacion.query.order_by(
+        Vacacion.created_at.desc()
+    ).all()
+
+    # Usuarios actualmente de vacaciones
+    usuarios_vacaciones = db.session.query(User).join(Vacacion).filter(
+        Vacacion.estado == "Aprobado",
+        Vacacion.fecha_inicio <= hoy,
+        Vacacion.fecha_fin >= hoy
+    ).all()
+
+    return render_template(
+        "vacaciones.html",
+        vacaciones=vacaciones,
+        usuarios_vacaciones=usuarios_vacaciones
+    )

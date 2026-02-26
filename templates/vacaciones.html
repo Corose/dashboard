@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Gestión de Vacaciones</h2>
+
+    <!-- 🔴 Usuarios actualmente de vacaciones -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-danger text-white">
+            Usuarios Actualmente de Vacaciones
+        </div>
+        <div class="card-body">
+            {% if usuarios_vacaciones %}
+                <ul class="list-group">
+                    {% for user in usuarios_vacaciones %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ user.nombre }}
+                            <span class="badge bg-danger">
+                                DE VACACIONES
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Nadie está de vacaciones actualmente.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 📋 Historial -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Historial de Solicitudes
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Días</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in vacaciones %}
+                    <tr>
+                        <td>{{ v.user.nombre }}</td>
+                        <td>{{ v.fecha_inicio }}</td>
+                        <td>{{ v.fecha_fin }}</td>
+                        <td>{{ v.dias_solicitados }}</td>
+                        <td>
+                            {% if v.estado == "Aprobado" %}
+                                <span class="badge bg-success">Aprobado</span>
+                            {% elif v.estado == "Pendiente" %}
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Rechazado</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
