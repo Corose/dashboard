@@ -376,9 +376,13 @@ def solicitar_vacaciones():
         dias = (fecha_fin - fecha_inicio).days + 1
 
         # 🔴 Validar días disponibles
-        if user.dias_disponibles < dias:
+        if user.dias_vacaciones < dias:
             flash("El empleado no tiene suficientes días disponibles")
             return redirect(url_for("vacaciones_view"))
+        
+
+# Descontar días
+        user.dias_vacaciones -= dias
 
         nueva = Vacacion(
             user_id=user_id,
@@ -450,7 +454,7 @@ def delete_vacacion(id):
     user = User.query.get(vacacion.user_id)
 
     # 🔵 Devolver días al empleado
-    user.dias_disponibles += vacacion.dias_solicitados
+    user.dias_vacaciones += vacacion.dias_solicitados
 
     db.session.delete(vacacion)
     db.session.commit()
