@@ -5,6 +5,18 @@
 
     <h2 class="mb-4">Gestión de Vacaciones</h2>
 
+    <!-- 📊 DASHBOARD ANUAL -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h6>Total días usados (Año)</h6>
+                    <h3 class="text-primary">{{ total_dias_anual }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 🔴 Usuarios actualmente de vacaciones -->
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-danger text-white">
@@ -26,7 +38,8 @@
         </div>
     </div>
 
-    <!-- 📝 Registrar Vacaciones -->
+    <!-- 📝 Registrar Vacaciones (Solo Admin) -->
+    {% if current_user.rol == "admin" %}
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
             Registrar Vacaciones
@@ -37,26 +50,34 @@
                 <div class="row mb-3">
 
                     <!-- Usuario -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Empleado</label>
                         <select name="user_id" class="form-select" required>
                             <option value="">Seleccionar empleado</option>
                             {% for user in usuarios %}
-                                <option value="{{ user.id }}">{{ user.nombre }}</option>
+                                <option value="{{ user.id }}">
+                                    {{ user.nombre }} ({{ user.dias_disponibles }} días disponibles)
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
 
                     <!-- Fecha inicio -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Fecha Inicio</label>
                         <input type="date" name="fecha_inicio" class="form-control" required>
                     </div>
 
                     <!-- Fecha fin -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Fecha Fin</label>
                         <input type="date" name="fecha_fin" class="form-control" required>
+                    </div>
+
+                    <!-- Días -->
+                    <div class="col-md-3">
+                        <label class="form-label">Días</label>
+                        <input type="number" name="dias" class="form-control" required>
                     </div>
 
                 </div>
@@ -65,9 +86,14 @@
                     Registrar Vacaciones
                 </button>
 
+                <a href="{{ url_for('exportar_vacaciones_excel') }}" class="btn btn-outline-success">
+                    📤 Exportar a Excel
+                </a>
+
             </form>
         </div>
     </div>
+    {% endif %}
 
     <!-- 📋 Historial -->
     <div class="card shadow-sm">
@@ -83,6 +109,10 @@
                         <th>Fin</th>
                         <th>Días</th>
                         <th>Estado</th>
+                        <th>Registrado por</th>
+                        {% if current_user.rol == "admin" %}
+                        <th>Acciones</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -97,6 +127,23 @@
                                 {{ v.estado }}
                             </span>
                         </td>
+                        <td>{{ v.registrado_por.nombre }}</td>
+
+                        {% if current_user.rol == "admin" %}
+                        <td>
+                            <!-- ✏ Editar -->
+                            <a href="{{ url_for('editar_vacacion', id=v.id) }}" 
+                               class="btn btn-warning btn-sm">
+                               ✏
+                            </a>
+
+                            <!-- 🗑 Eliminar -->
+                            <button onclick="eliminarVacacion({{ v.id }})"
+                                    class="btn btn-danger btn-sm">
+                                🗑
+                            </button>
+                        </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -105,5 +152,24 @@
     </div>
 
 </div>
+
+
+<script>
+function eliminarVacacion(id) {
+    if (!confirm("¿Eliminar vacaciones?")) return;
+
+    fetch(`/delete_vacacion/${id}`, {
+        method: "POST"
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert("Error al eliminar");
+        }
+    });
+}
+</script>
 
 {% endblock %}

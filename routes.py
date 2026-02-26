@@ -323,6 +323,13 @@ def vacaciones_view():
         Vacacion.created_at.desc()
     ).all()
 
+    # 🔵 Total días año actual
+    total_dias_anual = db.session.query(
+        func.sum(Vacacion.dias_solicitados)
+    ).filter(
+        Vacacion.anio == hoy.year
+    ).scalar() or 0
+
     usuarios_vacaciones = db.session.query(User).join(Vacacion).filter(
         Vacacion.estado == "Aprobado",
         Vacacion.fecha_inicio <= hoy,
@@ -335,7 +342,8 @@ def vacaciones_view():
         "vacaciones.html",
         vacaciones=vacaciones,
         usuarios_vacaciones=usuarios_vacaciones,
-        usuarios=usuarios
+        usuarios=usuarios,
+        total_dias_anual=total_dias_anual
     )
 # =========================
 # SOLICITAR VACACIONES
@@ -351,6 +359,7 @@ def solicitar_vacaciones():
         from datetime import datetime
 
         user_id = request.form["user_id"]
+        user = User.query.get(user_id)
 
         fecha_inicio = datetime.strptime(
             request.form["fecha_inicio"], "%Y-%m-%d"
@@ -364,16 +373,25 @@ def solicitar_vacaciones():
             flash("La fecha fin no puede ser menor que la fecha inicio")
             return redirect(url_for("vacaciones_view"))
 
-        # Calcular días automáticamente
         dias = (fecha_fin - fecha_inicio).days + 1
+
+        # 🔴 Validar días disponibles
+        if user.dias_disponibles < dias:
+            flash("El empleado no tiene suficientes días disponibles")
+            return redirect(url_for("vacaciones_view"))
 
         nueva = Vacacion(
             user_id=user_id,
             fecha_inicio=fecha_inicio,
             fecha_fin=fecha_fin,
             dias_solicitados=dias,
-            estado="Aprobado"  # el admin ya lo aprueba directamente
+            estado="Aprobado",
+            registrado_por=current_user.username,
+            anio=fecha_inicio.year
         )
+
+        # 🔵 Descontar días
+        user.dias_disponibles -= dias
 
         db.session.add(nueva)
         db.session.commit()
@@ -385,7 +403,6 @@ def solicitar_vacaciones():
         flash("Error al registrar vacaciones")
 
     return redirect(url_for("vacaciones_view"))
-
 
 # =========================
 # ELIMINAR TODOS LOS USUARIOS (ADMIN ONLY)
@@ -417,3 +434,116 @@ def delete_all_users():
         db.session.rollback()
         print("ERROR:", e)
         return {"success": False}, 500
+    
+# =========================
+# ELIMINAR VACACIÓN (ADMIN ONLY)
+# =========================
+
+@app.route("/delete_vacacion/<int:id>", methods=["POST"])
+@login_required
+def delete_vacacion(id):
+
+    if current_user.role != "admin":
+        return {"success": False}, 403
+
+    vacacion = Vacacion.query.get_or_404(id)
+    user = User.query.get(vacacion.user_id)
+
+    # 🔵 Devolver días al empleado
+    user.dias_disponibles += vacacion.dias_solicitados
+
+    db.session.delete(vacacion)
+    db.session.commit()
+
+    return {"success": True}
+
+
+# =========================
+# EDITAR VACACIÓN (ADMIN ONLY)
+# =========================
+
+
+@app.route("/edit_vacacion/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_vacacion(id):
+
+    if current_user.role != "admin":
+        return redirect(url_for("dashboard"))
+
+    vacacion = Vacacion.query.get_or_404(id)
+
+    from datetime import datetime
+
+    if request.method == "POST":
+
+        fecha_inicio = datetime.strptime(
+            request.form["fecha_inicio"], "%Y-%m-%d"
+        ).date()
+
+        fecha_fin = datetime.strptime(
+            request.form["fecha_fin"], "%Y-%m-%d"
+        ).date()
+
+        dias = (fecha_fin - fecha_inicio).days + 1
+
+        vacacion.fecha_inicio = fecha_inicio
+        vacacion.fecha_fin = fecha_fin
+        vacacion.dias_solicitados = dias
+
+        db.session.commit()
+
+        return redirect(url_for("vacaciones_view"))
+
+    return render_template("edit_vacacion.html", vacacion=vacacion)
+
+# =========================
+# EXPORTAR VACACIONES A EXCEL (ADMIN ONLY)
+# =========================
+
+
+@app.route("/exportar_vacaciones_excel")
+@login_required
+def exportar_vacaciones_excel():
+
+    if current_user.role != "admin":
+        return redirect(url_for("dashboard"))
+
+    vacaciones = Vacacion.query.all()
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Vacaciones"
+
+    headers = [
+        "Empleado",
+        "Fecha Inicio",
+        "Fecha Fin",
+        "Días",
+        "Estado",
+        "Registrado por",
+        "Año"
+    ]
+
+    ws.append(headers)
+
+    for v in vacaciones:
+        ws.append([
+            v.user.nombre,
+            v.fecha_inicio,
+            v.fecha_fin,
+            v.dias_solicitados,
+            v.estado,
+            v.registrado_por,
+            v.anio
+        ])
+
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name="Reporte_Vacaciones.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
