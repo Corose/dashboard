@@ -368,7 +368,7 @@ def vacaciones_view():
 # =========================
 # ELIMINAR TODOS LOS USUARIOS (POSTGRES)
 # =========================
-f@app.route("/delete_user/<int:id>", methods=["POST"])
+@app.route("/delete_user/<int:id>", methods=["POST"])
 @login_required
 def delete_user(id):
 
