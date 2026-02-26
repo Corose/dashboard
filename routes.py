@@ -92,14 +92,14 @@ def dashboard():
     ).group_by(User.equipo).all()
 
     return render_template(
-        "dashboard.html",
-        users=users,
-        total_users=total_users,
-        activos=activos,
-        inactivos=inactivos,
-        equipos=equipos
-    )
-
+    "dashboard.html",
+    users=users,
+    total_users=total_users,
+    activos=activos,
+    inactivos=inactivos,
+    equipos=equipos,
+    current_user=current_user
+)
 
 # =========================
 # CREAR USUARIO
@@ -368,21 +368,33 @@ def vacaciones_view():
 # =========================
 # ELIMINAR TODOS LOS USUARIOS (POSTGRES)
 # =========================
-from flask import jsonify
-
-@app.route("/delete_all_users", methods=["POST"])
+f@app.route("/delete_user/<int:id>", methods=["POST"])
 @login_required
-def delete_all_users():
+def delete_user(id):
 
     if current_user.role != "admin":
-        return jsonify({"success": False, "error": "No autorizado"}), 403
+        return {"success": False}, 403
+
+    user = User.query.get(id)
+
+    if not user:
+        return {"success": False}, 404
 
     try:
-        db.session.execute('TRUNCATE TABLE "user" RESTART IDENTITY CASCADE;')
+        # Primero eliminar vacaciones relacionadas
+        Vacacion.query.filter_by(user_id=user.id).delete()
+
+        deleted_data = {
+            "success": True,
+            "nombre": user.nombre,
+            "usuario": user.usuario
+        }
+
+        db.session.delete(user)
         db.session.commit()
 
-        return jsonify({"success": True})
+        return deleted_data
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"success": False, "error": str(e)})
+        return {"success": False, "error": str(e)}, 500
