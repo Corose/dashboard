@@ -39,7 +39,7 @@
     </div>
 
     <!-- 📝 Registrar Vacaciones (Solo Admin) -->
-    {% if current_user.rol == "admin" %}
+    {% if current_user.role == "admin" %}
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
             Registrar Vacaciones
@@ -56,7 +56,10 @@
                             <option value="">Seleccionar empleado</option>
                             {% for user in usuarios %}
                                 <option value="{{ user.id }}">
-                                    {{ user.nombre }} ({{ user.dias_disponibles }} días disponibles)
+                                    {{ user.nombre }} 
+                                    {% if user.dias_disponibles is defined %}
+                                        ({{ user.dias_disponibles }} días disponibles)
+                                    {% endif %}
                                 </option>
                             {% endfor %}
                         </select>
@@ -86,7 +89,8 @@
                     Registrar Vacaciones
                 </button>
 
-                <a href="{{ url_for('exportar_vacaciones_excel') }}" class="btn btn-outline-success">
+                <a href="{{ url_for('exportar_vacaciones_excel') }}" 
+                   class="btn btn-outline-success">
                     📤 Exportar a Excel
                 </a>
 
@@ -110,7 +114,7 @@
                         <th>Días</th>
                         <th>Estado</th>
                         <th>Registrado por</th>
-                        {% if current_user.rol == "admin" %}
+                        {% if current_user.role == "admin" %}
                         <th>Acciones</th>
                         {% endif %}
                     </tr>
@@ -127,9 +131,17 @@
                                 {{ v.estado }}
                             </span>
                         </td>
-                        <td>{{ v.registrado_por.nombre }}</td>
 
-                        {% if current_user.rol == "admin" %}
+                        <!-- Seguro contra null -->
+                        <td>
+                            {% if v.registrado_por and v.registrado_por.nombre is defined %}
+                                {{ v.registrado_por.nombre }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        {% if current_user.role == "admin" %}
                         <td>
                             <!-- ✏ Editar -->
                             <a href="{{ url_for('editar_vacacion', id=v.id) }}" 
@@ -159,7 +171,10 @@ function eliminarVacacion(id) {
     if (!confirm("¿Eliminar vacaciones?")) return;
 
     fetch(`/delete_vacacion/${id}`, {
-        method: "POST"
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
     })
     .then(res => res.json())
     .then(data => {
@@ -168,7 +183,8 @@ function eliminarVacacion(id) {
         } else {
             alert("Error al eliminar");
         }
-    });
+    })
+    .catch(() => alert("Error en el servidor"));
 }
 </script>
 
