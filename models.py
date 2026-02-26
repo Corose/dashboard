@@ -30,8 +30,8 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.now())
     activo = db.Column(db.Boolean, default=True)
 
-    # 🔥 DÍAS DISPONIBLES PARA VACACIONES
-    dias_disponibles = db.Column(db.Integer, default=12)
+    # ✅ COINCIDE CON POSTGRES
+    dias_vacaciones = db.Column(db.Integer, default=12)
 
 
 # =========================
@@ -50,8 +50,8 @@ class Vacacion(db.Model):
 
     estado = db.Column(db.String(20), default="Aprobado")
 
-    registrado_por = db.Column(db.String(100))  # 👤 admin que registró
+    registrado_por = db.Column(db.String(100))
 
-    anio = db.Column(db.Integer)  # 🔥 asignado desde la ruta
+    anio = db.Column(db.Integer)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
