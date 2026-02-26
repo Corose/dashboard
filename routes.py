@@ -320,10 +320,9 @@ def vacaciones_view():
     hoy = date.today()
 
     vacaciones = Vacacion.query.order_by(
-        Vacacion.created_at.desc()
+        Vacacion.id.desc()
     ).all()
 
-    # 🔵 Total días año actual
     total_dias_anual = db.session.query(
         func.sum(Vacacion.dias_solicitados)
     ).filter(
