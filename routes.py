@@ -314,6 +314,9 @@ def import_excel():
 @login_required
 def vacaciones_view():
 
+    if current_user.role != "admin":
+        return redirect(url_for("dashboard"))
+
     hoy = date.today()
 
     vacaciones = Vacacion.query.order_by(
@@ -326,14 +329,72 @@ def vacaciones_view():
         Vacacion.fecha_fin >= hoy
     ).all()
 
+    usuarios = User.query.filter_by(activo=True).all()
+
     return render_template(
         "vacaciones.html",
         vacaciones=vacaciones,
-        usuarios_vacaciones=usuarios_vacaciones
+        usuarios_vacaciones=usuarios_vacaciones,
+        usuarios=usuarios
     )
+# =========================
+# SOLICITAR VACACIONES
+# =========================
+@app.route("/solicitar_vacaciones", methods=["POST"])
+@login_required
+def solicitar_vacaciones():
+
+    if current_user.role != "admin":
+        return redirect(url_for("dashboard"))
+
+    try:
+        from datetime import datetime
+
+        user_id = request.form["user_id"]
+
+        fecha_inicio = datetime.strptime(
+            request.form["fecha_inicio"], "%Y-%m-%d"
+        ).date()
+
+        fecha_fin = datetime.strptime(
+            request.form["fecha_fin"], "%Y-%m-%d"
+        ).date()
+
+        if fecha_fin < fecha_inicio:
+            flash("La fecha fin no puede ser menor que la fecha inicio")
+            return redirect(url_for("vacaciones_view"))
+
+        # Calcular días automáticamente
+        dias = (fecha_fin - fecha_inicio).days + 1
+
+        nueva = Vacacion(
+            user_id=user_id,
+            fecha_inicio=fecha_inicio,
+            fecha_fin=fecha_fin,
+            dias_solicitados=dias,
+            estado="Aprobado"  # el admin ya lo aprueba directamente
+        )
+
+        db.session.add(nueva)
+        db.session.commit()
+
+        flash("Vacaciones registradas correctamente")
+
+    except Exception as e:
+        db.session.rollback()
+        flash("Error al registrar vacaciones")
+
+    return redirect(url_for("vacaciones_view"))
+
+
 # =========================
 # ELIMINAR TODOS LOS USUARIOS (ADMIN ONLY)
 # =========================
+
+
+from models import db, User
+from sqlalchemy import text
+
 @app.route("/delete_all_users", methods=["POST"])
 @login_required
 def delete_all_users():
@@ -342,11 +403,11 @@ def delete_all_users():
         return {"success": False}, 403
 
     try:
-        # Primero eliminar vacaciones
-        Vacacion.query.delete()
+        # Eliminar todos los registros
+        db.session.query(User).delete()
 
-        # Luego eliminar usuarios
-        User.query.delete()
+        # Reiniciar autoincrement en SQLite
+        db.session.execute(text("DELETE FROM sqlite_sequence WHERE name='user'"))
 
         db.session.commit()
 
@@ -354,4 +415,5 @@ def delete_all_users():
 
     except Exception as e:
         db.session.rollback()
-        return {"success": False, "error": str(e)}, 500
+        print("ERROR:", e)
+        return {"success": False}, 500
