@@ -312,7 +312,7 @@ def import_excel():
 # =========================
 from datetime import date
 
-@app.route("/vacaciones")
+@@app.route("/vacaciones")
 @login_required
 def vacaciones_view():
 
@@ -321,35 +321,41 @@ def vacaciones_view():
 
     hoy = date.today()
 
-    # 🔵 Todas
-    vacaciones = Vacacion.query.order_by(
-        Vacacion.fecha_inicio.desc()
-    ).all()
-
-    # 🟢 Activas hoy
+    # 🟢 Activas
     activas = Vacacion.query.filter(
         Vacacion.estado == "Aprobado",
         Vacacion.fecha_inicio <= hoy,
         Vacacion.fecha_fin >= hoy
-    ).all()
+    ).order_by(Vacacion.fecha_fin.asc()).all()
 
-    # 🔜 Próximas
+    # 🔜 Próximas (orden ascendente)
     proximas = Vacacion.query.filter(
         Vacacion.estado == "Aprobado",
         Vacacion.fecha_inicio > hoy
-    ).all()
+    ).order_by(Vacacion.fecha_inicio.asc()).all()
 
     # ⚪ Finalizadas
     finalizadas = Vacacion.query.filter(
         Vacacion.estado == "Aprobado",
         Vacacion.fecha_fin < hoy
-    ).all()
+    ).order_by(Vacacion.fecha_fin.desc()).all()
+
+    # 🔢 Agregar días restantes dinámicamente
+    for v in activas:
+        v.dias_restantes = (v.fecha_fin - hoy).days
+
+    for v in proximas:
+        v.dias_para_iniciar = (v.fecha_inicio - hoy).days
 
     total_dias_anual = db.session.query(
         func.sum(Vacacion.dias_solicitados)
     ).filter(
         Vacacion.anio == hoy.year
     ).scalar() or 0
+
+    vacaciones = Vacacion.query.order_by(
+        Vacacion.fecha_inicio.desc()
+    ).all()
 
     usuarios = User.query.filter_by(activo=True).all()
 
