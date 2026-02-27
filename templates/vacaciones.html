@@ -1,201 +1,247 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container-fluid mt-4">
+<div class="container py-5">
 
-    <!-- TÍTULO -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Panel de Vacaciones</h2>
-    </div>
+<!-- ================= KPI CARDS ================= -->
 
-    <!-- RESUMEN -->
-    <div class="row mb-4">
+<div class="row mb-4">
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6 class="text-muted">VACACIONES ACTIVAS</h6>
-                <h3 class="fw-bold">{{ activas or 0 }}</h3>
+    <div class="col-md-4">
+        <div class="kpi-card d-flex justify-content-between align-items-center">
+            <div>
+                <div class="kpi-title">VACACIONES ACTIVAS</div>
+                <div class="kpi-number">{{ activas|length }}</div>
+            </div>
+            <div class="kpi-icon">
+                <i class="bi bi-calendar-check"></i>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6 class="text-muted">PRÓXIMAS</h6>
-                <h3 class="fw-bold">
-                    {% if proximas %}
-                        {{ proximas|length }}
-                    {% else %}
-                        0
-                    {% endif %}
-                </h3>
+    <div class="col-md-4">
+        <div class="kpi-card d-flex justify-content-between align-items-center">
+            <div>
+                <div class="kpi-title">PRÓXIMAS</div>
+                <div class="kpi-number">{{ proximas|length }}</div>
+            </div>
+            <div class="kpi-icon">
+                <i class="bi bi-hourglass-split"></i>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6 class="text-muted">DÍAS USADOS (AÑO)</h6>
-                <h3 class="fw-bold">{{ dias_usados or 0 }}</h3>
+    <div class="col-md-4">
+        <div class="kpi-card d-flex justify-content-between align-items-center">
+            <div>
+                <div class="kpi-title">DÍAS USADOS (AÑO)</div>
+                <div class="kpi-number">{{ total_dias_anual }}</div>
             </div>
-        </div>
-
-    </div>
-
-    <!-- REGISTRAR VACACIONES -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-dark text-white">
-            Registrar Vacaciones
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
-                <div class="row g-3 align-items-end">
-
-                    <div class="col-md-4">
-                        <label class="form-label">Empleado</label>
-                        <select name="user_id" class="form-select" required>
-                            <option value="">Seleccionar empleado</option>
-
-                            {% if users %}
-                                {% for user in users %}
-                                    <option value="{{ user.id }}">
-                                        {{ user.nombre }} ({{ user.dias_vacaciones }} días)
-                                    </option>
-                                {% endfor %}
-                            {% else %}
-                                <option disabled>No hay usuarios disponibles</option>
-                            {% endif %}
-
-                        </select>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Fecha inicio</label>
-                        <input type="date" name="fecha_inicio"
-                               class="form-control" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Fecha fin</label>
-                        <input type="date" name="fecha_fin"
-                               class="form-control" required>
-                    </div>
-
-                    <div class="col-md-2">
-                        <button type="submit"
-                                class="btn btn-danger w-100">
-                            Registrar
-                        </button>
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- USUARIOS ACTUALMENTE DE VACACIONES -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-light">
-            Usuarios Actualmente de Vacaciones
-        </div>
-        <div class="card-body">
-
-            {% if activas_list and activas_list|length > 0 %}
-                <ul class="list-group list-group-flush">
-                    {% for v in activas_list %}
-                        <li class="list-group-item">
-                            {{ v.user.nombre }} 
-                            ({{ v.fecha_inicio }} - {{ v.fecha_fin }})
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-muted mb-0">
-                    No hay vacaciones activas hoy.
-                </p>
-            {% endif %}
-
-        </div>
-    </div>
-
-    <!-- PRÓXIMAS VACACIONES -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-light">
-            Próximas Vacaciones
-        </div>
-        <div class="card-body">
-
-            {% if proximas and proximas|length > 0 %}
-                {% for v in proximas %}
-                    <p>
-                        {{ v.user.nombre }} - {{ v.fecha_inicio }}
-                    </p>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No hay próximas vacaciones.</p>
-            {% endif %}
-
-        </div>
-    </div>
-
-    <!-- HISTORIAL -->
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-light">
-            Historial de Vacaciones
-        </div>
-        <div class="card-body table-responsive">
-
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
-                        <th>Días</th>
-                        <th>Estado</th>
-                        <th>Registrado Por</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {% if historial and historial|length > 0 %}
-                        {% for v in historial %}
-                        <tr>
-                            <td>{{ v.user.nombre }}</td>
-                            <td>{{ v.fecha_inicio }}</td>
-                            <td>{{ v.fecha_fin }}</td>
-                            <td>{{ v.dias_solicitados }}</td>
-                            <td>
-                                {% if v.estado == "Aprobado" %}
-                                    <span class="badge bg-success">Aprobado</span>
-                                {% elif v.estado == "Pendiente" %}
-                                    <span class="badge bg-warning text-dark">Pendiente</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Rechazado</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ v.registrado_por }}</td>
-                            <td>
-                                <a href="{{ url_for('edit_vacacion', id=v.id) }}"
-                                   class="btn btn-sm btn-outline-primary">
-                                   Editar
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">
-                                No hay registros
-                            </td>
-                        </tr>
-                    {% endif %}
-
-                </tbody>
-            </table>
-
+            <div class="kpi-icon">
+                <i class="bi bi-bar-chart-line"></i>
+            </div>
         </div>
     </div>
 
 </div>
+
+
+<!-- ================= FORMULARIO ================= -->
+
+<div class="card-custom mb-5">
+
+<h6 class="mb-4">Registrar Vacaciones</h6>
+
+<form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
+<div class="row g-3">
+
+<div class="col-md-3">
+<label class="form-label">Empleado</label>
+<select name="user_id" class="form-control" required>
+<option value="">Seleccionar empleado</option>
+{% for user in usuarios %}
+<option value="{{ user.id }}">
+{{ user.nombre }} ({{ user.dias_vacaciones }} días)
+</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="col-md-3">
+<label class="form-label">Fecha inicio</label>
+<input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+</div>
+
+<div class="col-md-3">
+<label class="form-label">Fecha fin</label>
+<input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+</div>
+
+<div class="col-md-3">
+<label class="form-label">Días</label>
+<input type="number" name="dias" id="dias" class="form-control" readonly>
+</div>
+
+<div class="col-12 text-end">
+<button type="submit" class="btn btn-danger px-4">
+<i class="bi bi-calendar-plus"></i> Registrar
+</button>
+</div>
+
+</div>
+</form>
+</div>
+
+
+<!-- ================= ACTIVAS ================= -->
+
+<div class="card-custom mb-4">
+
+<h6 class="mb-3">Usuarios Actualmente de Vacaciones</h6>
+
+{% if activas %}
+    {% for v in activas %}
+    <div class="team-card mb-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="team-name">
+                <i class="bi bi-calendar-check me-2"></i>
+                {{ v.user.nombre }}
+            </div>
+            <div class="team-count">
+                {{ v.dias_restantes }} días
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<p class="text-muted">No hay vacaciones activas hoy.</p>
+{% endif %}
+
+</div>
+
+
+<!-- ================= PRÓXIMAS ================= -->
+
+<div class="card-custom mb-5">
+
+<h6 class="mb-3">Próximas Vacaciones</h6>
+
+{% if proximas %}
+    {% for v in proximas %}
+    <div class="team-card mb-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="team-name">
+                <i class="bi bi-hourglass-split me-2"></i>
+                {{ v.user.nombre }} - {{ v.fecha_inicio }}
+            </div>
+            <div class="team-count">
+                Faltan {{ v.dias_para_iniciar }} días
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<p class="text-muted">No hay vacaciones próximas.</p>
+{% endif %}
+
+</div>
+
+
+<!-- ================= HISTORIAL ================= -->
+
+<div class="card-custom mb-5">
+
+<h6 class="mb-4">Historial de Vacaciones</h6>
+
+<div class="table-container">
+<table class="table-oni">
+
+<thead>
+<tr>
+<th>Usuario</th>
+<th>Inicio</th>
+<th>Fin</th>
+<th>Días</th>
+<th>Estado</th>
+<th>Registrado Por</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+{% for v in vacaciones %}
+<tr>
+
+<td>{{ v.user.nombre }}</td>
+<td>{{ v.fecha_inicio }}</td>
+<td>{{ v.fecha_fin }}</td>
+<td>{{ v.dias_solicitados }}</td>
+
+<td>
+{% if v.estado == "Aprobado" %}
+<span class="badge-access">APROBADO</span>
+{% elif v.estado == "Pendiente" %}
+<span class="badge-access" style="border-color:#C5A059;">PENDIENTE</span>
+{% elif v.estado == "Rechazado" %}
+<span class="badge-access" style="border-color:#ff5c33;">RECHAZADO</span>
+{% endif %}
+</td>
+
+<td>{{ v.registrado_por or "-" }}</td>
+
+<td>
+<a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn">
+<i class="bi bi-pencil-square"></i>
+</a>
+
+<button onclick="eliminarVacacion({{ v.id }})"
+class="action-btn ms-2">
+<i class="bi bi-trash"></i>
+</button>
+</td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+</div>
+
+</div>
+
+
+<!-- ================= JS ================= -->
+
+<script>
+const inicio = document.getElementById("fecha_inicio");
+const fin = document.getElementById("fecha_fin");
+const diasInput = document.getElementById("dias");
+
+function calcularDias() {
+    if (inicio.value && fin.value) {
+        const fechaInicio = new Date(inicio.value);
+        const fechaFin = new Date(fin.value);
+
+        const diff = (fechaFin - fechaInicio) / (1000 * 60 * 60 * 24) + 1;
+
+        if (diff > 0) {
+            diasInput.value = diff;
+        } else {
+            diasInput.value = 0;
+        }
+    }
+}
+
+inicio.addEventListener("change", calcularDias);
+fin.addEventListener("change", calcularDias);
+
+
+function eliminarVacacion(id) {
+    if (confirm("¿Seguro que deseas eliminar esta vacación?")) {
+        window.location.href = "/delete_vacacion/" + id;
+    }
+}
+</script>
 
 {% endblock %}
