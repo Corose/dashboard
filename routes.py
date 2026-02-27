@@ -312,7 +312,7 @@ def import_excel():
 # =========================
 from datetime import date
 
-@@app.route("/vacaciones")
+@app.route("/vacaciones")
 @login_required
 def vacaciones_view():
 
