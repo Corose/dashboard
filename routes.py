@@ -486,6 +486,8 @@ def delete_vacacion(id):
 # =========================
 
 
+from datetime import datetime
+
 @app.route("/edit_vacacion/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_vacacion(id):
@@ -507,12 +509,14 @@ def edit_vacacion(id):
 
             db.session.commit()
 
+            print("CAMBIOS GUARDADOS")
             flash("Vacación actualizada correctamente", "success")
+
             return redirect(url_for("vacaciones_view"))
 
         except Exception as e:
-            print("ERROR AL EDITAR:", e)
-            flash("Error al actualizar la vacación", "danger")
+            print("ERROR AL GUARDAR:", e)
+            flash("Error al actualizar", "danger")
 
     return render_template("edit_vacacion.html", vacacion=vacacion)
 # =========================
