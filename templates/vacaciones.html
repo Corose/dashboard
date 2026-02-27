@@ -5,128 +5,159 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 :root{
-    --bg-main:#0e1116;
-    --bg-card:#171b22;
-    --bg-soft:#1f252e;
-    --accent:#e10600;
-    --accent-yellow:#ffcc00;
-    --text-main:#f1f1f1;
-    --text-muted:#8b949e;
-    --border:#2a2f37;
+    --bg-main:#0b0f14;
+    --card:#161b22;
+    --card-soft:#1f2630;
+    --accent:#ff3b3b;
+    --yellow:#ffcc00;
+    --green:#2ecc71;
+    --text:#ffffff;
+    --text-soft:#c9d1d9;
+    --border:#2b313a;
 }
 
-/* ====== BASE ====== */
+/* ===== BASE ===== */
 body{
-    background: var(--bg-main);
+    background:var(--bg-main);
     font-family:'Inter',sans-serif;
-    color:var(--text-main);
+    color:var(--text);
 }
 
-/* ====== CONTENEDOR GENERAL ====== */
-.container{
-    max-width:1400px;
-}
-
-/* ====== CARDS ====== */
-.card-custom{
-    background:var(--bg-card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:30px;
-    margin-bottom:30px;
-    box-shadow:0 5px 25px rgba(0,0,0,.35);
-}
-
-/* ====== HEADERS SECCIÓN ====== */
-.section-header{
-    font-size:1.1rem;
-    font-weight:700;
-    letter-spacing:.5px;
-    margin-bottom:25px;
-    padding-bottom:10px;
+/* ===== HEADER MINIMAL ===== */
+.clean-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:#11161d;
     border-bottom:1px solid var(--border);
-    color:var(--accent-yellow);
 }
 
-/* ====== KPI CARDS ====== */
-.kpi-card{
-    background:var(--bg-soft);
+.clean-header h5{
+    margin:0;
+    font-weight:600;
+    color:var(--text);
+}
+
+.btn-dashboard{
+    background:transparent;
     border:1px solid var(--border);
-    border-radius:12px;
-    padding:25px;
+    padding:6px 18px;
+    border-radius:8px;
+    color:var(--text-soft);
+    text-decoration:none;
+    font-size:.85rem;
     transition:.2s;
 }
 
-.kpi-card:hover{
+.btn-dashboard:hover{
     border-color:var(--accent);
-    transform:translateY(-3px);
+    color:white;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    max-width:1300px;
+}
+
+/* ===== CARDS ===== */
+.card-custom{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:30px;
+    margin-bottom:30px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+}
+
+/* ===== TITULOS ===== */
+.section-header{
+    font-size:1.1rem;
+    font-weight:600;
+    margin-bottom:25px;
+    color:var(--yellow);
+}
+
+/* ===== KPIs ===== */
+.kpi-card{
+    background:var(--card-soft);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:25px;
 }
 
 .kpi-title{
     font-size:.75rem;
-    color:var(--text-muted);
     text-transform:uppercase;
-    letter-spacing:.8px;
+    color:var(--text-soft);
+    letter-spacing:.7px;
 }
 
 .kpi-number{
     font-size:2.5rem;
     font-weight:700;
-    margin-top:10px;
+    margin-top:8px;
 }
 
-.kpi-icon{
-    font-size:2rem;
-    color:var(--accent);
-}
-
-/* ====== FORM ====== */
+/* ===== FORM ===== */
 .form-label{
     font-size:.75rem;
-    color:var(--text-muted);
-    text-transform:uppercase;
+    color:var(--text-soft);
 }
 
 .form-control{
-    background:var(--bg-soft) !important;
+    background:var(--card-soft) !important;
     border:1px solid var(--border) !important;
-    border-radius:8px !important;
+    border-radius:10px !important;
     color:white !important;
+    height:45px;
 }
 
 .form-control:focus{
     border-color:var(--accent) !important;
-    box-shadow:0 0 0 2px rgba(225,6,0,.25) !important;
+    box-shadow:0 0 0 2px rgba(255,59,59,.3) !important;
 }
 
+/* ===== CALENDARIO PERSONALIZADO ===== */
+input[type="date"]{
+    appearance:none;
+    position:relative;
+    padding-right:40px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator{
+    filter:invert(1);
+    opacity:.7;
+    cursor:pointer;
+}
+
+input[type="date"]:hover::-webkit-calendar-picker-indicator{
+    opacity:1;
+}
+
+/* ===== BOTON REGISTRAR ===== */
 .btn-registrar{
     background:var(--accent);
     border:none;
-    border-radius:8px;
-    padding:10px 25px;
+    border-radius:10px;
+    padding:10px 28px;
     font-weight:600;
-    transition:.2s;
 }
 
 .btn-registrar:hover{
-    background:#ff1a1a;
+    background:#ff5555;
 }
 
-/* ====== TEAM CARDS ====== */
+/* ===== TEAM CARDS ===== */
 .team-card{
-    background:var(--bg-soft);
+    background:var(--card-soft);
     border:1px solid var(--border);
     border-radius:10px;
-    padding:15px 20px;
+    padding:14px 18px;
     margin-bottom:10px;
-    transition:.2s;
 }
 
-.team-card:hover{
-    border-color:var(--accent);
-}
-
-/* ====== TABLAS ====== */
+/* ===== TABLA ===== */
 .table-container{
     overflow-x:auto;
 }
@@ -136,34 +167,26 @@ body{
     border-collapse:collapse;
 }
 
-.table-oni thead{
-    background:var(--bg-soft);
-}
-
 .table-oni th{
     padding:16px;
-    font-size:.7rem;
+    font-size:.75rem;
     text-transform:uppercase;
-    letter-spacing:.7px;
-    color:var(--text-muted);
+    color:var(--text-soft);
     border-bottom:1px solid var(--border);
 }
 
 .table-oni td{
     padding:16px;
+    font-size:.95rem;
     border-bottom:1px solid var(--border);
-    font-size:.9rem;
-}
-
-.table-oni tbody tr{
-    transition:.15s;
+    color:white;
 }
 
 .table-oni tbody tr:hover{
-    background:rgba(255,255,255,.03);
+    background:rgba(255,255,255,.04);
 }
 
-/* ====== BADGES ====== */
+/* ===== BADGES ===== */
 .badge-access{
     padding:6px 12px;
     border-radius:20px;
@@ -171,63 +194,68 @@ body{
     font-weight:600;
 }
 
-/* ====== ACCIONES ====== */
+/* ===== BOTONES ACCIONES ===== */
 .action-btn{
-    background:none;
+    padding:6px 14px;
+    border-radius:8px;
     border:none;
-    color:var(--text-muted);
-    font-size:1rem;
-    transition:.2s;
+    font-size:.75rem;
+    font-weight:600;
+    margin-right:6px;
 }
 
-.action-btn:hover{
-    color:var(--accent);
+.btn-edit{
+    background:var(--yellow);
+    color:black;
 }
+
+.btn-delete{
+    background:var(--accent);
+    color:white;
+}
+
+.btn-edit:hover{ opacity:.8; }
+.btn-delete:hover{ opacity:.8; }
+
 </style>
+
+<!-- HEADER LIMPIO -->
+<div class="clean-header">
+    <h5>Gestión de Vacaciones</h5>
+    <a href="{{ url_for('dashboard') }}" class="btn-dashboard">
+        ← Volver al Dashboard
+    </a>
+</div>
 
 <div class="container py-5">
 
-<!-- ===== KPIs ===== -->
+<!-- KPIs -->
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="kpi-card d-flex justify-content-between align-items-center">
-            <div>
-                <div class="kpi-title">Vacaciones activas</div>
-                <div class="kpi-number">{{ activas|length }}</div>
-            </div>
-            <div class="kpi-icon"><i class="bi bi-calendar-check"></i></div>
+        <div class="kpi-card">
+            <div class="kpi-title">Vacaciones activas</div>
+            <div class="kpi-number">{{ activas|length }}</div>
         </div>
     </div>
-
     <div class="col-md-4">
-        <div class="kpi-card d-flex justify-content-between align-items-center">
-            <div>
-                <div class="kpi-title">Próximas</div>
-                <div class="kpi-number" style="color:var(--accent-yellow)">
-                    {{ proximas|length }}
-                </div>
-            </div>
-            <div class="kpi-icon" style="color:var(--accent-yellow)">
-                <i class="bi bi-hourglass-split"></i>
+        <div class="kpi-card">
+            <div class="kpi-title">Próximas</div>
+            <div class="kpi-number" style="color:var(--yellow)">
+                {{ proximas|length }}
             </div>
         </div>
     </div>
-
     <div class="col-md-4">
-        <div class="kpi-card d-flex justify-content-between align-items-center">
-            <div>
-                <div class="kpi-title">Días usados (año)</div>
-                <div class="kpi-number">{{ total_dias_anual }}</div>
-            </div>
-            <div class="kpi-icon"><i class="bi bi-bar-chart-line"></i></div>
+        <div class="kpi-card">
+            <div class="kpi-title">Días usados (año)</div>
+            <div class="kpi-number">{{ total_dias_anual }}</div>
         </div>
     </div>
 </div>
 
-<!-- ===== REGISTRO ===== -->
+<!-- REGISTRO -->
 <div class="card-custom">
     <div class="section-header">Registrar Vacaciones</div>
-
     <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
         <div class="row g-3">
             <div class="col-md-3">
@@ -266,46 +294,7 @@ body{
     </form>
 </div>
 
-<!-- ===== EN CURSO / PRÓXIMAS ===== -->
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card-custom">
-            <div class="section-header">En Curso</div>
-            {% if activas %}
-                {% for v in activas %}
-                <div class="team-card d-flex justify-content-between">
-                    <strong>{{ v.user.nombre }}</strong>
-                    <span style="color:var(--accent)">
-                        {{ v.dias_restantes }} días restantes
-                    </span>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No hay vacaciones activas.</p>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card-custom">
-            <div class="section-header">Próximas</div>
-            {% if proximas %}
-                {% for v in proximas %}
-                <div class="team-card d-flex justify-content-between">
-                    <span>{{ v.user.nombre }}</span>
-                    <span style="color:var(--accent-yellow)">
-                        Faltan {{ v.dias_para_iniciar }} días
-                    </span>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No hay vacaciones próximas.</p>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-<!-- ===== HISTORIAL ===== -->
+<!-- HISTORIAL -->
 <div class="card-custom mt-4">
     <div class="section-header">Historial General</div>
 
@@ -328,25 +317,25 @@ body{
                     <td><strong>{{ v.user.nombre }}</strong></td>
                     <td>{{ v.fecha_inicio }}</td>
                     <td>{{ v.fecha_fin }}</td>
-                    <td style="color:var(--accent-yellow); font-weight:600">
+                    <td style="color:var(--yellow); font-weight:600">
                         {{ v.dias_solicitados }}
                     </td>
                     <td>
                         {% if v.estado == "Aprobado" %}
-                        <span class="badge-access" style="background:#238636;">Aprobado</span>
+                        <span class="badge-access" style="background:var(--green)">Aprobado</span>
                         {% elif v.estado == "Pendiente" %}
-                        <span class="badge-access" style="background:var(--accent-yellow); color:black;">Pendiente</span>
+                        <span class="badge-access" style="background:var(--yellow); color:black;">Pendiente</span>
                         {% else %}
-                        <span class="badge-access" style="background:var(--accent);">Rechazado</span>
+                        <span class="badge-access" style="background:var(--accent)">Rechazado</span>
                         {% endif %}
                     </td>
-                    <td class="text-muted small">{{ v.registrado_por or "-" }}</td>
+                    <td>{{ v.registrado_por or "-" }}</td>
                     <td>
-                        <a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn">
-                            <i class="bi bi-pencil"></i>
+                        <a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn btn-edit">
+                            Editar
                         </a>
-                        <button onclick="eliminarVacacion({{ v.id }})" class="action-btn ms-2">
-                            <i class="bi bi-trash"></i>
+                        <button onclick="eliminarVacacion({{ v.id }})" class="action-btn btn-delete">
+                            Eliminar
                         </button>
                     </td>
                 </tr>
