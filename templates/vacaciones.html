@@ -1,217 +1,324 @@
 {% extends "base.html" %}
 {% block content %}
 
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+    :root {
+        --bg-dark: #05050a;
+        --neon-cyan: #00f3ff;
+        --neon-magenta: #ff0055;
+        --neon-yellow: #fcee0a;
+        --card-bg: rgba(15, 15, 25, 0.9);
+    }
+
+    body {
+        background-color: var(--bg-dark);
+        background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #05050a 100%);
+        color: #e0e0e0;
+        font-family: 'Rajdhani', sans-serif;
+    }
+
+    .container { position: relative; }
+
+    /* KPI CARDS */
+    .kpi-card {
+        background: var(--card-bg);
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        border-left: 4px solid var(--neon-cyan);
+        padding: 1.5rem;
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+    }
+    .kpi-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        color: var(--neon-cyan);
+    }
+    .kpi-number {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        text-shadow: 0 0 10px var(--neon-cyan);
+    }
+    .kpi-icon { font-size: 1.8rem; opacity: 0.7; color: var(--neon-cyan); }
+
+    /* CUSTOM CARDS & FORMS */
+    .card-custom {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 0, 85, 0.2);
+        padding: 2rem;
+        position: relative;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 98% 100%, 0 100%);
+    }
+    .card-custom h6 {
+        font-family: 'Orbitron', sans-serif;
+        color: var(--neon-magenta);
+        text-transform: uppercase;
+        border-left: 3px solid var(--neon-magenta);
+        padding-left: 10px;
+    }
+
+    .form-label { color: var(--neon-cyan); font-weight: 500; font-size: 0.8rem; }
+    .form-control {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid #333;
+        color: #fff;
+        border-radius: 0;
+    }
+    .form-control:focus {
+        background: rgba(0, 0, 0, 0.6);
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+        color: #fff;
+    }
+
+    /* BUTTONS */
+    .btn-danger {
+        background: transparent;
+        border: 1px solid var(--neon-magenta);
+        color: var(--neon-magenta);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        transition: 0.3s;
+        border-radius: 0;
+    }
+    .btn-danger:hover {
+        background: var(--neon-magenta);
+        box-shadow: 0 0 20px var(--neon-magenta);
+        color: #000;
+    }
+
+    /* TEAM CARDS */
+    .team-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+        padding: 10px 15px;
+    }
+    .team-name { font-weight: 500; color: #fff; }
+    .team-count { color: var(--neon-yellow); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
+
+    /* TABLE ONI */
+    .table-container { overflow-x: auto; }
+    .table-oni {
+        width: 100%;
+        margin-top: 1rem;
+        border-collapse: collapse;
+    }
+    .table-oni thead {
+        border-bottom: 2px solid var(--neon-cyan);
+        font-family: 'Orbitron', sans-serif;
+        color: var(--neon-cyan);
+        font-size: 0.8rem;
+    }
+    .table-oni th, .table-oni td { padding: 12px; text-align: left; }
+    .table-oni tbody tr { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .table-oni tbody tr:hover { background: rgba(0, 243, 255, 0.05); }
+
+    .badge-access {
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 3px 8px;
+        font-size: 0.7rem;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .action-btn {
+        color: var(--neon-cyan);
+        transition: 0.2s;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    .action-btn:hover { color: var(--neon-magenta); filter: drop-shadow(0 0 5px var(--neon-magenta)); }
+
+    /* ESTILO JAPONÉS DECORATIVO */
+    .card-custom::after {
+        content: "休暇システム"; /* "Sistema de Vacaciones" en Japonés */
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.1);
+        font-family: serif;
+    }
+</style>
+
 <div class="container py-5">
 
-<!-- ================= KPI CARDS ================= -->
-
-<div class="row mb-4">
-
-    <div class="col-md-4">
-        <div class="kpi-card d-flex justify-content-between align-items-center">
-            <div>
-                <div class="kpi-title">VACACIONES ACTIVAS</div>
-                <div class="kpi-number">{{ activas|length }}</div>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="kpi-card d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="kpi-title">VACACIONES ACTIVAS // アクティブ</div>
+                    <div class="kpi-number">{{ activas|length }}</div>
+                </div>
+                <div class="kpi-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
             </div>
-            <div class="kpi-icon">
-                <i class="bi bi-calendar-check"></i>
+        </div>
+
+        <div class="col-md-4">
+            <div class="kpi-card d-flex justify-content-between align-items-center" style="border-left-color: var(--neon-yellow);">
+                <div>
+                    <div class="kpi-title">PRÓXIMAS // 今後の</div>
+                    <div class="kpi-number" style="color: var(--neon-yellow); text-shadow: 0 0 10px var(--neon-yellow);">{{ proximas|length }}</div>
+                </div>
+                <div class="kpi-icon" style="color: var(--neon-yellow);">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="kpi-card d-flex justify-content-between align-items-center" style="border-left-color: var(--neon-magenta);">
+                <div>
+                    <div class="kpi-title">DÍAS USADOS (AÑO) // 統計</div>
+                    <div class="kpi-number" style="color: var(--neon-magenta); text-shadow: 0 0 10px var(--neon-magenta);">{{ total_dias_anual }}</div>
+                </div>
+                <div class="kpi-icon" style="color: var(--neon-magenta);">
+                    <i class="bi bi-bar-chart-line"></i>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="kpi-card d-flex justify-content-between align-items-center">
-            <div>
-                <div class="kpi-title">PRÓXIMAS</div>
-                <div class="kpi-number">{{ proximas|length }}</div>
+    <div class="card-custom mb-5">
+        <h6 class="mb-4">Registrar Vacaciones // 新規登録</h6>
+        <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Empleado</label>
+                    <select name="user_id" class="form-control" required>
+                        <option value="">Seleccionar empleado</option>
+                        {% for user in usuarios %}
+                        <option value="{{ user.id }}">
+                            {{ user.nombre }} ({{ user.dias_vacaciones }} días)
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Fecha inicio</label>
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Fecha fin</label>
+                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Días</label>
+                    <input type="number" name="dias" id="dias" class="form-control" readonly style="color:var(--neon-yellow); font-weight: bold;">
+                </div>
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="bi bi-calendar-plus"></i> Registrar_Execute
+                    </button>
+                </div>
             </div>
-            <div class="kpi-icon">
-                <i class="bi bi-hourglass-split"></i>
-            </div>
-        </div>
+        </form>
     </div>
 
-    <div class="col-md-4">
-        <div class="kpi-card d-flex justify-content-between align-items-center">
-            <div>
-                <div class="kpi-title">DÍAS USADOS (AÑO)</div>
-                <div class="kpi-number">{{ total_dias_anual }}</div>
+    <div class="card-custom mb-4" style="border-left: 2px solid var(--neon-cyan);">
+        <h6 class="mb-3">Usuarios Actualmente de Vacaciones</h6>
+        {% if activas %}
+            {% for v in activas %}
+            <div class="team-card mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="team-name">
+                        <i class="bi bi-calendar-check me-2" style="color: var(--neon-cyan);"></i>
+                        {{ v.user.nombre }}
+                    </div>
+                    <div class="team-count">
+                        {{ v.dias_restantes }} días restantes
+                    </div>
+                </div>
             </div>
-            <div class="kpi-icon">
-                <i class="bi bi-bar-chart-line"></i>
-            </div>
-        </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted small">No hay vacaciones activas hoy. _NULL_DATA</p>
+        {% endif %}
     </div>
 
-</div>
-
-
-<!-- ================= FORMULARIO ================= -->
-
-<div class="card-custom mb-5">
-
-<h6 class="mb-4">Registrar Vacaciones</h6>
-
-<form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
-<div class="row g-3">
-
-<div class="col-md-3">
-<label class="form-label">Empleado</label>
-<select name="user_id" class="form-control" required>
-<option value="">Seleccionar empleado</option>
-{% for user in usuarios %}
-<option value="{{ user.id }}">
-{{ user.nombre }} ({{ user.dias_vacaciones }} días)
-</option>
-{% endfor %}
-</select>
-</div>
-
-<div class="col-md-3">
-<label class="form-label">Fecha inicio</label>
-<input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
-</div>
-
-<div class="col-md-3">
-<label class="form-label">Fecha fin</label>
-<input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
-</div>
-
-<div class="col-md-3">
-<label class="form-label">Días</label>
-<input type="number" name="dias" id="dias" class="form-control" readonly>
-</div>
-
-<div class="col-12 text-end">
-<button type="submit" class="btn btn-danger px-4">
-<i class="bi bi-calendar-plus"></i> Registrar
-</button>
-</div>
-
-</div>
-</form>
-</div>
-
-
-<!-- ================= ACTIVAS ================= -->
-
-<div class="card-custom mb-4">
-
-<h6 class="mb-3">Usuarios Actualmente de Vacaciones</h6>
-
-{% if activas %}
-    {% for v in activas %}
-    <div class="team-card mb-2">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="team-name">
-                <i class="bi bi-calendar-check me-2"></i>
-                {{ v.user.nombre }}
+    <div class="card-custom mb-5" style="border-left: 2px solid var(--neon-yellow);">
+        <h6 class="mb-3">Próximas Vacaciones</h6>
+        {% if proximas %}
+            {% for v in proximas %}
+            <div class="team-card mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="team-name">
+                        <i class="bi bi-hourglass-split me-2" style="color: var(--neon-yellow);"></i>
+                        {{ v.user.nombre }} <span class="text-muted" style="font-size: 0.8rem;">// {{ v.fecha_inicio }}</span>
+                    </div>
+                    <div class="team-count">
+                        Faltan {{ v.dias_para_iniciar }} días
+                    </div>
+                </div>
             </div>
-            <div class="team-count">
-                {{ v.dias_restantes }} días
-            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted small">No hay vacaciones próximas. _AWAITING_SCHEDULE</p>
+        {% endif %}
+    </div>
+
+    <div class="card-custom mb-5">
+        <h6 class="mb-4">Historial de Vacaciones // ログ履歴</h6>
+        <div class="table-container">
+            <table class="table-oni">
+                <thead>
+                    <tr>
+                        <th>USUARIO</th>
+                        <th>INICIO</th>
+                        <th>FIN</th>
+                        <th>DÍAS</th>
+                        <th>ESTADO</th>
+                        <th>REGISTRO</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in vacaciones %}
+                    <tr>
+                        <td class="fw-bold" style="color: #fff;">{{ v.user.nombre }}</td>
+                        <td>{{ v.fecha_inicio }}</td>
+                        <td>{{ v.fecha_fin }}</td>
+                        <td style="color: var(--neon-cyan);">{{ v.dias_solicitados }}</td>
+                        <td>
+                            {% if v.estado == "Aprobado" %}
+                            <span class="badge-access">APROBADO</span>
+                            {% elif v.estado == "Pendiente" %}
+                            <span class="badge-access" style="border-color:var(--neon-yellow); color: var(--neon-yellow);">PENDIENTE</span>
+                            {% elif v.estado == "Rechazado" %}
+                            <span class="badge-access" style="border-color:var(--neon-magenta); color: var(--neon-magenta);">RECHAZADO</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted" style="font-size: 0.8rem;">{{ v.registrado_por or "-" }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <button onclick="eliminarVacacion({{ v.id }})" class="action-btn ms-2">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    {% endfor %}
-{% else %}
-<p class="text-muted">No hay vacaciones activas hoy.</p>
-{% endif %}
-
 </div>
-
-
-<!-- ================= PRÓXIMAS ================= -->
-
-<div class="card-custom mb-5">
-
-<h6 class="mb-3">Próximas Vacaciones</h6>
-
-{% if proximas %}
-    {% for v in proximas %}
-    <div class="team-card mb-2">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="team-name">
-                <i class="bi bi-hourglass-split me-2"></i>
-                {{ v.user.nombre }} - {{ v.fecha_inicio }}
-            </div>
-            <div class="team-count">
-                Faltan {{ v.dias_para_iniciar }} días
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-{% else %}
-<p class="text-muted">No hay vacaciones próximas.</p>
-{% endif %}
-
-</div>
-
-
-<!-- ================= HISTORIAL ================= -->
-
-<div class="card-custom mb-5">
-
-<h6 class="mb-4">Historial de Vacaciones</h6>
-
-<div class="table-container">
-<table class="table-oni">
-
-<thead>
-<tr>
-<th>Usuario</th>
-<th>Inicio</th>
-<th>Fin</th>
-<th>Días</th>
-<th>Estado</th>
-<th>Registrado Por</th>
-<th>Acciones</th>
-</tr>
-</thead>
-
-<tbody>
-{% for v in vacaciones %}
-<tr>
-
-<td>{{ v.user.nombre }}</td>
-<td>{{ v.fecha_inicio }}</td>
-<td>{{ v.fecha_fin }}</td>
-<td>{{ v.dias_solicitados }}</td>
-
-<td>
-{% if v.estado == "Aprobado" %}
-<span class="badge-access">APROBADO</span>
-{% elif v.estado == "Pendiente" %}
-<span class="badge-access" style="border-color:#C5A059;">PENDIENTE</span>
-{% elif v.estado == "Rechazado" %}
-<span class="badge-access" style="border-color:#ff5c33;">RECHAZADO</span>
-{% endif %}
-</td>
-
-<td>{{ v.registrado_por or "-" }}</td>
-
-<td>
-<a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn">
-<i class="bi bi-pencil-square"></i>
-</a>
-
-<button onclick="eliminarVacacion({{ v.id }})"
-class="action-btn ms-2">
-<i class="bi bi-trash"></i>
-</button>
-</td>
-
-</tr>
-{% endfor %}
-</tbody>
-
-</table>
-</div>
-</div>
-
-</div>
-
-
-<!-- ================= JS ================= -->
 
 <script>
 const inicio = document.getElementById("fecha_inicio");
@@ -222,9 +329,7 @@ function calcularDias() {
     if (inicio.value && fin.value) {
         const fechaInicio = new Date(inicio.value);
         const fechaFin = new Date(fin.value);
-
         const diff = (fechaFin - fechaInicio) / (1000 * 60 * 60 * 24) + 1;
-
         if (diff > 0) {
             diasInput.value = diff;
         } else {
@@ -236,9 +341,8 @@ function calcularDias() {
 inicio.addEventListener("change", calcularDias);
 fin.addEventListener("change", calcularDias);
 
-
 function eliminarVacacion(id) {
-    if (confirm("¿Seguro que deseas eliminar esta vacación?")) {
+    if (confirm("¿Seguro que deseas eliminar esta vacación? // 削除の確認")) {
         window.location.href = "/delete_vacacion/" + id;
     }
 }
