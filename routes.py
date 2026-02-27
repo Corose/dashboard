@@ -486,15 +486,13 @@ def delete_vacacion(id):
 # =========================
 
 
-@app.route("/edit_vacacion/<int:id>", methods=["GET","POST"])
+@app.route("/edit_vacacion/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_vacacion(id):
-    try:
-        vacacion = Vacacion.query.get_or_404(id)
+    vacacion = Vacacion.query.get_or_404(id)
 
-        if request.method == "POST":
-            print("POST RECIBIDO")  # 👈 debug
-
+    if request.method == "POST":
+        try:
             vacacion.fecha_inicio = datetime.strptime(
                 request.form["fecha_inicio"], "%Y-%m-%d"
             ).date()
@@ -503,14 +501,20 @@ def edit_vacacion(id):
                 request.form["fecha_fin"], "%Y-%m-%d"
             ).date()
 
+            vacacion.dias_solicitados = int(request.form["dias"])
+
+            vacacion.estado = request.form["estado"]
+
             db.session.commit()
-            return redirect(url_for("historial_vacaciones"))
 
-        return render_template("edit_vacacion.html", vacacion=vacacion)
+            flash("Vacación actualizada correctamente", "success")
+            return redirect(url_for("vacaciones_view"))
 
-    except Exception as e:
-        print("ERROR:", e)
-        return "Error interno", 500
+        except Exception as e:
+            print("ERROR AL EDITAR:", e)
+            flash("Error al actualizar la vacación", "danger")
+
+    return render_template("edit_vacacion.html", vacacion=vacacion)
 # =========================
 # EXPORTAR VACACIONES A EXCEL (ADMIN ONLY)
 # =========================
