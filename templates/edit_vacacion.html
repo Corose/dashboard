@@ -2,45 +2,77 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2>Editar Vacación</h2>
+    <h2 class="mb-4">Editar Vacaciones</h2>
 
     <div class="card shadow-sm">
         <div class="card-body">
-
             <form method="POST">
 
-                <div class="mb-3">
-                    <label class="form-label">Fecha Inicio</label>
-                    <input type="date" name="fecha_inicio"
-                           value="{{ vacacion.fecha_inicio }}"
-                           class="form-control" required>
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label">Empleado</label>
+                        <input type="text" class="form-control"
+                               value="{{ vacacion.user.nombre }}" disabled>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Fecha inicio</label>
+                        <input type="date" name="fecha_inicio"
+                               class="form-control"
+                               value="{{ vacacion.fecha_inicio }}"
+                               required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Fecha fin</label>
+                        <input type="date" name="fecha_fin"
+                               class="form-control"
+                               value="{{ vacacion.fecha_fin }}"
+                               required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Días</label>
+                        <input type="number"
+                               name="dias"
+                               class="form-control"
+                               value="{{ vacacion.dias_solicitados }}"
+                               required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Estado</label>
+                        <select name="estado" class="form-select">
+                            <option value="Aprobado"
+                                {% if vacacion.estado == "Aprobado" %}selected{% endif %}>
+                                Aprobado
+                            </option>
+                            <option value="Pendiente"
+                                {% if vacacion.estado == "Pendiente" %}selected{% endif %}>
+                                Pendiente
+                            </option>
+                            <option value="Rechazado"
+                                {% if vacacion.estado == "Rechazado" %}selected{% endif %}>
+                                Rechazado
+                            </option>
+                        </select>
+                    </div>
+
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Fecha Fin</label>
-                    <input type="date" name="fecha_fin"
-                           value="{{ vacacion.fecha_fin }}"
-                           class="form-control" required>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">
+                        Guardar Cambios
+                    </button>
+
+                    <a href="{{ url_for('vacaciones_view') }}"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Días</label>
-                    <input type="number" name="dias"
-                           value="{{ vacacion.dias_solicitados }}"
-                           class="form-control" required>
-                </div>
-
-                <button type="submit" class="btn btn-success">
-                    Guardar Cambios
-                </button>
-
-                <a href="{{ url_for('vacaciones') }}"
-                   class="btn btn-secondary">
-                    Cancelar
-                </a>
 
             </form>
-
         </div>
     </div>
 </div>

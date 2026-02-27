@@ -486,39 +486,31 @@ def delete_vacacion(id):
 # =========================
 
 
-@app.route("/edit_vacacion/<int:id>", methods=["GET", "POST"])
+@app.route("/edit_vacacion/<int:id>", methods=["GET","POST"])
 @login_required
 def edit_vacacion(id):
+    try:
+        vacacion = Vacacion.query.get_or_404(id)
 
-    if current_user.role != "admin":
-        return redirect(url_for("dashboard"))
+        if request.method == "POST":
+            print("POST RECIBIDO")  # 👈 debug
 
-    vacacion = Vacacion.query.get_or_404(id)
+            vacacion.fecha_inicio = datetime.strptime(
+                request.form["fecha_inicio"], "%Y-%m-%d"
+            ).date()
 
-    from datetime import datetime
+            vacacion.fecha_fin = datetime.strptime(
+                request.form["fecha_fin"], "%Y-%m-%d"
+            ).date()
 
-    if request.method == "POST":
+            db.session.commit()
+            return redirect(url_for("historial_vacaciones"))
 
-        fecha_inicio = datetime.strptime(
-            request.form["fecha_inicio"], "%Y-%m-%d"
-        ).date()
+        return render_template("edit_vacacion.html", vacacion=vacacion)
 
-        fecha_fin = datetime.strptime(
-            request.form["fecha_fin"], "%Y-%m-%d"
-        ).date()
-
-        dias = (fecha_fin - fecha_inicio).days + 1
-
-        vacacion.fecha_inicio = fecha_inicio
-        vacacion.fecha_fin = fecha_fin
-        vacacion.dias_solicitados = dias
-
-        db.session.commit()
-
-        return redirect(url_for("vacaciones_view"))
-
-    return render_template("edit_vacacion.html", vacacion=vacacion)
-
+    except Exception as e:
+        print("ERROR:", e)
+        return "Error interno", 500
 # =========================
 # EXPORTAR VACACIONES A EXCEL (ADMIN ONLY)
 # =========================
