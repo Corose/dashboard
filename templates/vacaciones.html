@@ -2,322 +2,270 @@
 {% block content %}
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Bebas+Neue&display=swap');
 
-    :root {
-        --oni-red: #cc0000;
-        --hazard-yellow: #ffcc00;
-        --industrial-dark: #121212;
-        --panel-bg: #1e1e1e;
-        --text-main: #ffffff;
-        --text-muted: #b0b0b0;
-        --border-color: #333333;
-    }
+:root {
+    --oni-red: #cc0000;
+    --hazard-yellow: #ffcc00;
+    --industrial-dark: #0f0f0f;
+    --panel-bg: #1b1b1b;
+    --panel-soft: #232323;
+    --text-main: #ffffff;
+    --text-muted: #9a9a9a;
+    --border-color: #2f2f2f;
+}
 
-    body {
-        background-color: var(--industrial-dark);
-        color: var(--text-main);
-        font-family: 'Roboto Mono', monospace; /* Tipografía técnica muy legible */
-    }
+/* ===== NAVBAR REDISEÑADO ===== */
+.navbar-oni {
+    background: linear-gradient(90deg, #111, #1a1a1a);
+    border-bottom: 3px solid var(--oni-red);
+    padding: 12px 25px;
+}
+.navbar-oni .navbar-brand {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: var(--hazard-yellow) !important;
+}
+.navbar-oni .nav-link {
+    color: var(--text-muted) !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-left: 15px;
+    transition: 0.2s;
+}
+.navbar-oni .nav-link:hover {
+    color: var(--oni-red) !important;
+}
 
-    /* KPI CARDS - Diseño robusto */
-    .kpi-card {
-        background: var(--panel-bg);
-        border: 2px solid var(--border-color);
-        border-bottom: 4px solid var(--oni-red);
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-    .kpi-title {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 5px;
-    }
-    .kpi-number {
-        font-family: 'Bebas Neue', cursive;
-        font-size: 3rem;
-        color: var(--text-main);
-        line-height: 1;
-    }
-    .kpi-icon {
-        font-size: 2rem;
-        color: var(--oni-red);
-    }
+/* ===== GENERAL ===== */
+body {
+    background-color: var(--industrial-dark);
+    color: var(--text-main);
+    font-family: 'Roboto Mono', monospace;
+}
 
-    /* CARD CUSTOM - Formularios y Secciones */
-    .card-custom {
-        background: var(--panel-bg);
-        border: 1px solid var(--border-color);
-        padding: 25px;
-        position: relative;
-    }
-    .section-header {
-        font-family: 'Bebas Neue', cursive;
-        font-size: 1.5rem;
-        color: var(--hazard-yellow);
-        letter-spacing: 1px;
-        border-bottom: 2px solid var(--hazard-yellow);
-        margin-bottom: 20px;
-        display: inline-block;
-    }
+.card-custom {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
 
-    /* CAMPOS DE FORMULARIO - Máxima visibilidad */
-    .form-label {
-        color: var(--text-main);
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        margin-bottom: 8px;
-    }
-    .form-control {
-        background: #000000 !important;
-        border: 2px solid var(--border-color) !important;
-        border-radius: 0 !important;
-        color: var(--hazard-yellow) !important;
-        font-size: 1rem !important;
-        height: 45px;
-    }
-    .form-control:focus {
-        border-color: var(--oni-red) !important;
-        box-shadow: none !important;
-    }
-    /* Estilo para el input readonly */
-    input[readonly] {
-        background: #1a1a1a !important;
-        border-color: #444 !important;
-    }
+.section-header {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.6rem;
+    color: var(--hazard-yellow);
+    border-left: 5px solid var(--hazard-yellow);
+    padding-left: 10px;
+    margin-bottom: 25px;
+}
 
-    /* BOTONES */
-    .btn-registrar {
-        background-color: var(--oni-red);
-        color: white;
-        border: none;
-        border-radius: 0;
-        padding: 10px 30px;
-        font-family: 'Bebas Neue', cursive;
-        font-size: 1.2rem;
-        letter-spacing: 1px;
-        transition: 0.2s;
-    }
-    .btn-registrar:hover {
-        background-color: #ff0000;
-        box-shadow: 0 0 15px rgba(204, 0, 0, 0.4);
-        color: white;
-    }
+/* ===== FORM ===== */
+.form-control {
+    background: #000 !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    color: var(--hazard-yellow) !important;
+}
+.form-control:focus {
+    border-color: var(--oni-red) !important;
+    box-shadow: 0 0 10px rgba(204,0,0,0.4) !important;
+}
 
-    /* TABLAS - Diseño Industrial Limpio */
-    .table-container {
-        border: 1px solid var(--border-color);
-        background: #151515;
-    }
-    .table-oni {
-        width: 100%;
-        margin-bottom: 0;
-        color: var(--text-main);
-        border-collapse: collapse;
-    }
-    .table-oni thead th {
-        background: #252525;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        padding: 15px;
-        border-bottom: 2px solid var(--oni-red);
-    }
-    .table-oni tbody td {
-        padding: 15px;
-        border-bottom: 1px solid var(--border-color);
-        vertical-align: middle;
-    }
-    .table-oni tbody tr:hover {
-        background: rgba(255, 255, 255, 0.03);
-    }
+.btn-registrar {
+    background: var(--oni-red);
+    border: none;
+    padding: 10px 35px;
+    font-family: 'Bebas Neue';
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+.btn-registrar:hover {
+    background: #ff0000;
+}
 
-    /* BADGES */
-    .badge-access {
-        display: inline-block;
-        padding: 5px 10px;
-        border: 1px solid var(--text-muted);
-        font-size: 0.7rem;
-        font-weight: bold;
-    }
+/* ===== TABLA MEJORADA ===== */
+.table-container {
+    background: var(--panel-soft);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
 
-    /* ICONOS DE ACCIÓN */
-    .action-btn {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        transition: 0.2s;
-    }
-    .action-btn:hover { color: var(--oni-red); }
+.table-oni {
+    width: 100%;
+    color: white;
+    border-collapse: collapse;
+}
 
-    /* TEAM CARDS */
-    .team-card {
-        background: #252525;
-        border: 1px solid var(--border-color);
-        padding: 12px;
-        margin-bottom: 10px;
-    }
+.table-oni thead {
+    background: #181818;
+}
+
+.table-oni th {
+    padding: 18px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--oni-red);
+}
+
+.table-oni td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-oni tbody tr:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* ===== BADGES ===== */
+.badge-estado {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+/* ===== BOTONES ACCIONES VISIBLES ===== */
+.btn-action {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-edit {
+    background: var(--hazard-yellow);
+    color: black;
+}
+.btn-edit:hover {
+    background: #ffd633;
+}
+
+.btn-delete {
+    background: var(--oni-red);
+    color: white;
+}
+.btn-delete:hover {
+    background: #ff0000;
+}
 </style>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-oni">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">ONI CONTROL</a>
+        <div>
+            <a class="nav-link d-inline" href="#">Dashboard</a>
+            <a class="nav-link d-inline" href="#">Vacaciones</a>
+            <a class="nav-link d-inline" href="#">Reportes</a>
+        </div>
+    </div>
+</nav>
 
 <div class="container py-5">
 
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="kpi-card d-flex justify-content-between align-items-center">
-                <div>
-                    <div class="kpi-title">VACACIONES ACTIVAS // ON-DUTY</div>
-                    <div class="kpi-number">{{ activas|length }}</div>
-                </div>
-                <div class="kpi-icon"><i class="bi bi-calendar-check"></i></div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="kpi-card d-flex justify-content-between align-items-center" style="border-bottom-color: var(--hazard-yellow);">
-                <div>
-                    <div class="kpi-title">PRÓXIMAS // SCHEDULED</div>
-                    <div class="kpi-number" style="color: var(--hazard-yellow);">{{ proximas|length }}</div>
-                </div>
-                <div class="kpi-icon" style="color: var(--hazard-yellow);"><i class="bi bi-hourglass-split"></i></div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="kpi-card d-flex justify-content-between align-items-center" style="border-bottom-color: #fff;">
-                <div>
-                    <div class="kpi-title">DÍAS USADOS (AÑO) // LOG</div>
-                    <div class="kpi-number">{{ total_dias_anual }}</div>
-                </div>
-                <div class="kpi-icon" style="color: #fff;"><i class="bi bi-bar-chart-line"></i></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card-custom mb-5">
-        <div class="section-header">Registrar Vacaciones // 新規登録</div>
-        <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Empleado_ID</label>
-                    <select name="user_id" class="form-control" required>
-                        <option value="">Seleccionar empleado</option>
-                        {% for user in usuarios %}
-                        <option value="{{ user.id }}">
-                            {{ user.nombre }} ({{ user.dias_vacaciones }} días)
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Fecha_Inicio</label>
-                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Fecha_Fin</label>
-                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Días_Neto</label>
-                    <input type="number" name="dias" id="dias" class="form-control" readonly>
-                </div>
-
-                <div class="col-12 text-end">
-                    <button type="submit" class="btn btn-registrar">
-                        <i class="bi bi-calendar-plus me-2"></i> REGISTRAR_ARCHIVO
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card-custom mb-4">
-                <div class="section-header" style="font-size: 1.1rem; border-color: var(--oni-red); color: var(--oni-red);">En Curso // 現在</div>
-                {% if activas %}
-                    {% for v in activas %}
-                    <div class="team-card">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span style="font-weight: bold;">{{ v.user.nombre }}</span>
-                            <span style="color: var(--oni-red);">{{ v.dias_restantes }} DÍAS RESTANTES</span>
-                        </div>
-                    </div>
+<div class="card-custom mb-5">
+    <div class="section-header">Registrar Vacaciones</div>
+    <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Empleado</label>
+                <select name="user_id" class="form-control" required>
+                    <option value="">Seleccionar</option>
+                    {% for user in usuarios %}
+                    <option value="{{ user.id }}">
+                        {{ user.nombre }} ({{ user.dias_vacaciones }} días)
+                    </option>
                     {% endfor %}
-                {% else %}
-                    <p class="text-muted small">No hay vacaciones activas hoy.</p>
-                {% endif %}
+                </select>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card-custom mb-4">
-                <div class="section-header" style="font-size: 1.1rem; border-color: var(--text-muted); color: var(--text-muted);">Próximas // 次回</div>
-                {% if proximas %}
-                    {% for v in proximas %}
-                    <div class="team-card">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>{{ v.user.nombre }} <small style="opacity: 0.6;">({{ v.fecha_inicio }})</small></span>
-                            <span style="color: var(--hazard-yellow);">FALTAN {{ v.dias_para_iniciar }} DÍAS</span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="text-muted small">No hay vacaciones próximas.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
 
-    <div class="card-custom mb-5">
-        <div class="section-header">Historial General // ログアーカイブ</div>
-        <div class="table-container">
-            <table class="table-oni">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
-                        <th>Días</th>
-                        <th>Estado</th>
-                        <th>Autor</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for v in vacaciones %}
-                    <tr>
-                        <td style="font-weight: bold; color: #fff;">{{ v.user.nombre }}</td>
-                        <td>{{ v.fecha_inicio }}</td>
-                        <td>{{ v.fecha_fin }}</td>
-                        <td style="color: var(--hazard-yellow); font-weight: bold;">{{ v.dias_solicitados }}</td>
-                        <td>
-                            {% if v.estado == "Aprobado" %}
-                            <span class="badge-access" style="border-color: #28a745; color: #28a745;">APROBADO</span>
-                            {% elif v.estado == "Pendiente" %}
-                            <span class="badge-access" style="border-color: var(--hazard-yellow); color: var(--hazard-yellow);">PENDIENTE</span>
-                            {% elif v.estado == "Rechazado" %}
-                            <span class="badge-access" style="border-color: var(--oni-red); color: var(--oni-red);">RECHAZADO</span>
-                            {% endif %}
-                        </td>
-                        <td class="text-muted small">{{ v.registrado_por or "-" }}</td>
-                        <td>
-                            <a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <button onclick="eliminarVacacion({{ v.id }})" class="action-btn ms-2" style="background:none; border:none; padding:0;">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="col-md-3">
+                <label>Inicio</label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+            </div>
+
+            <div class="col-md-3">
+                <label>Fin</label>
+                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+            </div>
+
+            <div class="col-md-3">
+                <label>Días</label>
+                <input type="number" name="dias" id="dias" class="form-control" readonly>
+            </div>
+
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-registrar">
+                    REGISTRAR
+                </button>
+            </div>
         </div>
+    </form>
+</div>
+
+<div class="card-custom">
+    <div class="section-header">Historial General</div>
+
+    <div class="table-container">
+        <table class="table-oni">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Días</th>
+                    <th>Estado</th>
+                    <th>Autor</th>
+                    <th style="width:200px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vacaciones %}
+                <tr>
+                    <td><strong>{{ v.user.nombre }}</strong></td>
+                    <td>{{ v.fecha_inicio }}</td>
+                    <td>{{ v.fecha_fin }}</td>
+                    <td style="color: var(--hazard-yellow); font-weight:bold;">
+                        {{ v.dias_solicitados }}
+                    </td>
+                    <td>
+                        {% if v.estado == "Aprobado" %}
+                        <span class="badge-estado" style="background:#28a745;">APROBADO</span>
+                        {% elif v.estado == "Pendiente" %}
+                        <span class="badge-estado" style="background:var(--hazard-yellow); color:black;">PENDIENTE</span>
+                        {% else %}
+                        <span class="badge-estado" style="background:var(--oni-red);">RECHAZADO</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ v.registrado_por or "-" }}</td>
+                    <td class="text-center">
+
+                        <!-- BOTÓN EDITAR -->
+                        <a href="{{ url_for('edit_vacacion', id=v.id) }}" 
+                           class="btn btn-action btn-edit me-2">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+
+                        <!-- BOTÓN ELIMINAR -->
+                        <button onclick="eliminarVacacion({{ v.id }})" 
+                                class="btn btn-action btn-delete">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
 
 </div>
 
@@ -331,11 +279,7 @@ function calcularDias() {
         const fechaInicio = new Date(inicio.value);
         const fechaFin = new Date(fin.value);
         const diff = (fechaFin - fechaInicio) / (1000 * 60 * 60 * 24) + 1;
-        if (diff > 0) {
-            diasInput.value = diff;
-        } else {
-            diasInput.value = 0;
-        }
+        diasInput.value = diff > 0 ? diff : 0;
     }
 }
 
@@ -343,7 +287,7 @@ inicio.addEventListener("change", calcularDias);
 fin.addEventListener("change", calcularDias);
 
 function eliminarVacacion(id) {
-    if (confirm("¿Seguro que deseas eliminar esta vacación? // 削除の確認")) {
+    if (confirm("¿Seguro que deseas eliminar esta vacación?")) {
         window.location.href = "/delete_vacacion/" + id;
     }
 }
