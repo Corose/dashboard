@@ -360,14 +360,14 @@ def vacaciones_view():
     usuarios = User.query.filter_by(activo=True).all()
 
     return render_template(
-        "vacaciones.html",
-        vacaciones=vacaciones,
-        activas=activas,
-        proximas=proximas,
-        finalizadas=finalizadas,
-        usuarios=usuarios,
-        total_dias_anual=total_dias_anual
-    )
+    "vacaciones.html",
+    vacaciones=vacaciones,
+    activas_list=activas,
+    proximas=proximas,
+    historial=finalizadas,
+    users=usuarios,
+    dias_usados=total_dias_anual
+)
 # =========================
 # SOLICITAR VACACIONES
 # =========================
