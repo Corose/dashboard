@@ -2,182 +2,238 @@
 {% block content %}
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-:root {
-    --oni-red: #cc0000;
-    --hazard-yellow: #ffcc00;
-    --industrial-dark: #0f0f0f;
-    --panel-bg: #1b1b1b;
-    --panel-soft: #232323;
-    --text-main: #ffffff;
-    --text-muted: #9a9a9a;
-    --border-color: #2f2f2f;
-}
-
-/* ===== NAVBAR REDISEÑADO ===== */
-.navbar-oni {
-    background: linear-gradient(90deg, #111, #1a1a1a);
-    border-bottom: 3px solid var(--oni-red);
-    padding: 12px 25px;
-}
-.navbar-oni .navbar-brand {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    color: var(--hazard-yellow) !important;
-}
-.navbar-oni .nav-link {
-    color: var(--text-muted) !important;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    margin-left: 15px;
-    transition: 0.2s;
-}
-.navbar-oni .nav-link:hover {
-    color: var(--oni-red) !important;
+:root{
+    --bg-main:#0e1116;
+    --bg-card:#171b22;
+    --bg-soft:#1f252e;
+    --accent:#e10600;
+    --accent-yellow:#ffcc00;
+    --text-main:#f1f1f1;
+    --text-muted:#8b949e;
+    --border:#2a2f37;
 }
 
-/* ===== GENERAL ===== */
-body {
-    background-color: var(--industrial-dark);
-    color: var(--text-main);
-    font-family: 'Roboto Mono', monospace;
+/* ====== BASE ====== */
+body{
+    background: var(--bg-main);
+    font-family:'Inter',sans-serif;
+    color:var(--text-main);
 }
 
-.card-custom {
-    background: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    padding: 30px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+/* ====== CONTENEDOR GENERAL ====== */
+.container{
+    max-width:1400px;
 }
 
-.section-header {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.6rem;
-    color: var(--hazard-yellow);
-    border-left: 5px solid var(--hazard-yellow);
-    padding-left: 10px;
-    margin-bottom: 25px;
+/* ====== CARDS ====== */
+.card-custom{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:30px;
+    margin-bottom:30px;
+    box-shadow:0 5px 25px rgba(0,0,0,.35);
 }
 
-/* ===== FORM ===== */
-.form-control {
-    background: #000 !important;
-    border: 2px solid var(--border-color) !important;
-    border-radius: 6px !important;
-    color: var(--hazard-yellow) !important;
-}
-.form-control:focus {
-    border-color: var(--oni-red) !important;
-    box-shadow: 0 0 10px rgba(204,0,0,0.4) !important;
-}
-
-.btn-registrar {
-    background: var(--oni-red);
-    border: none;
-    padding: 10px 35px;
-    font-family: 'Bebas Neue';
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-}
-.btn-registrar:hover {
-    background: #ff0000;
+/* ====== HEADERS SECCIÓN ====== */
+.section-header{
+    font-size:1.1rem;
+    font-weight:700;
+    letter-spacing:.5px;
+    margin-bottom:25px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+    color:var(--accent-yellow);
 }
 
-/* ===== TABLA MEJORADA ===== */
-.table-container {
-    background: var(--panel-soft);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
+/* ====== KPI CARDS ====== */
+.kpi-card{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:25px;
+    transition:.2s;
 }
 
-.table-oni {
-    width: 100%;
-    color: white;
-    border-collapse: collapse;
+.kpi-card:hover{
+    border-color:var(--accent);
+    transform:translateY(-3px);
 }
 
-.table-oni thead {
-    background: #181818;
+.kpi-title{
+    font-size:.75rem;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.8px;
 }
 
-.table-oni th {
-    padding: 18px;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    border-bottom: 2px solid var(--oni-red);
+.kpi-number{
+    font-size:2.5rem;
+    font-weight:700;
+    margin-top:10px;
 }
 
-.table-oni td {
-    padding: 15px;
-    border-bottom: 1px solid var(--border-color);
+.kpi-icon{
+    font-size:2rem;
+    color:var(--accent);
 }
 
-.table-oni tbody tr:hover {
-    background: rgba(255,255,255,0.05);
+/* ====== FORM ====== */
+.form-label{
+    font-size:.75rem;
+    color:var(--text-muted);
+    text-transform:uppercase;
 }
 
-/* ===== BADGES ===== */
-.badge-estado {
-    padding: 6px 12px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    border-radius: 20px;
+.form-control{
+    background:var(--bg-soft) !important;
+    border:1px solid var(--border) !important;
+    border-radius:8px !important;
+    color:white !important;
 }
 
-/* ===== BOTONES ACCIONES VISIBLES ===== */
-.btn-action {
-    font-size: 0.75rem;
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: none;
-    font-weight: bold;
-    transition: 0.2s;
+.form-control:focus{
+    border-color:var(--accent) !important;
+    box-shadow:0 0 0 2px rgba(225,6,0,.25) !important;
 }
 
-.btn-edit {
-    background: var(--hazard-yellow);
-    color: black;
-}
-.btn-edit:hover {
-    background: #ffd633;
+.btn-registrar{
+    background:var(--accent);
+    border:none;
+    border-radius:8px;
+    padding:10px 25px;
+    font-weight:600;
+    transition:.2s;
 }
 
-.btn-delete {
-    background: var(--oni-red);
-    color: white;
+.btn-registrar:hover{
+    background:#ff1a1a;
 }
-.btn-delete:hover {
-    background: #ff0000;
+
+/* ====== TEAM CARDS ====== */
+.team-card{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:15px 20px;
+    margin-bottom:10px;
+    transition:.2s;
+}
+
+.team-card:hover{
+    border-color:var(--accent);
+}
+
+/* ====== TABLAS ====== */
+.table-container{
+    overflow-x:auto;
+}
+
+.table-oni{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table-oni thead{
+    background:var(--bg-soft);
+}
+
+.table-oni th{
+    padding:16px;
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+    color:var(--text-muted);
+    border-bottom:1px solid var(--border);
+}
+
+.table-oni td{
+    padding:16px;
+    border-bottom:1px solid var(--border);
+    font-size:.9rem;
+}
+
+.table-oni tbody tr{
+    transition:.15s;
+}
+
+.table-oni tbody tr:hover{
+    background:rgba(255,255,255,.03);
+}
+
+/* ====== BADGES ====== */
+.badge-access{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:.7rem;
+    font-weight:600;
+}
+
+/* ====== ACCIONES ====== */
+.action-btn{
+    background:none;
+    border:none;
+    color:var(--text-muted);
+    font-size:1rem;
+    transition:.2s;
+}
+
+.action-btn:hover{
+    color:var(--accent);
 }
 </style>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-oni">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">ONI CONTROL</a>
-        <div>
-            <a class="nav-link d-inline" href="#">Dashboard</a>
-            <a class="nav-link d-inline" href="#">Vacaciones</a>
-            <a class="nav-link d-inline" href="#">Reportes</a>
-        </div>
-    </div>
-</nav>
-
 <div class="container py-5">
 
-<div class="card-custom mb-5">
+<!-- ===== KPIs ===== -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="kpi-card d-flex justify-content-between align-items-center">
+            <div>
+                <div class="kpi-title">Vacaciones activas</div>
+                <div class="kpi-number">{{ activas|length }}</div>
+            </div>
+            <div class="kpi-icon"><i class="bi bi-calendar-check"></i></div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="kpi-card d-flex justify-content-between align-items-center">
+            <div>
+                <div class="kpi-title">Próximas</div>
+                <div class="kpi-number" style="color:var(--accent-yellow)">
+                    {{ proximas|length }}
+                </div>
+            </div>
+            <div class="kpi-icon" style="color:var(--accent-yellow)">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="kpi-card d-flex justify-content-between align-items-center">
+            <div>
+                <div class="kpi-title">Días usados (año)</div>
+                <div class="kpi-number">{{ total_dias_anual }}</div>
+            </div>
+            <div class="kpi-icon"><i class="bi bi-bar-chart-line"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== REGISTRO ===== -->
+<div class="card-custom">
     <div class="section-header">Registrar Vacaciones</div>
+
     <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
         <div class="row g-3">
             <div class="col-md-3">
                 <label class="form-label">Empleado</label>
                 <select name="user_id" class="form-control" required>
-                    <option value="">Seleccionar</option>
+                    <option value="">Seleccionar empleado</option>
                     {% for user in usuarios %}
                     <option value="{{ user.id }}">
                         {{ user.nombre }} ({{ user.dias_vacaciones }} días)
@@ -187,30 +243,70 @@ body {
             </div>
 
             <div class="col-md-3">
-                <label>Inicio</label>
+                <label class="form-label">Inicio</label>
                 <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
             </div>
 
             <div class="col-md-3">
-                <label>Fin</label>
+                <label class="form-label">Fin</label>
                 <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
             </div>
 
             <div class="col-md-3">
-                <label>Días</label>
+                <label class="form-label">Días</label>
                 <input type="number" name="dias" id="dias" class="form-control" readonly>
             </div>
 
             <div class="col-12 text-end">
                 <button type="submit" class="btn btn-registrar">
-                    REGISTRAR
+                    Registrar
                 </button>
             </div>
         </div>
     </form>
 </div>
 
-<div class="card-custom">
+<!-- ===== EN CURSO / PRÓXIMAS ===== -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card-custom">
+            <div class="section-header">En Curso</div>
+            {% if activas %}
+                {% for v in activas %}
+                <div class="team-card d-flex justify-content-between">
+                    <strong>{{ v.user.nombre }}</strong>
+                    <span style="color:var(--accent)">
+                        {{ v.dias_restantes }} días restantes
+                    </span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No hay vacaciones activas.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card-custom">
+            <div class="section-header">Próximas</div>
+            {% if proximas %}
+                {% for v in proximas %}
+                <div class="team-card d-flex justify-content-between">
+                    <span>{{ v.user.nombre }}</span>
+                    <span style="color:var(--accent-yellow)">
+                        Faltan {{ v.dias_para_iniciar }} días
+                    </span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No hay vacaciones próximas.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- ===== HISTORIAL ===== -->
+<div class="card-custom mt-4">
     <div class="section-header">Historial General</div>
 
     <div class="table-container">
@@ -223,7 +319,7 @@ body {
                     <th>Días</th>
                     <th>Estado</th>
                     <th>Autor</th>
-                    <th style="width:200px;">Acciones</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -232,33 +328,26 @@ body {
                     <td><strong>{{ v.user.nombre }}</strong></td>
                     <td>{{ v.fecha_inicio }}</td>
                     <td>{{ v.fecha_fin }}</td>
-                    <td style="color: var(--hazard-yellow); font-weight:bold;">
+                    <td style="color:var(--accent-yellow); font-weight:600">
                         {{ v.dias_solicitados }}
                     </td>
                     <td>
                         {% if v.estado == "Aprobado" %}
-                        <span class="badge-estado" style="background:#28a745;">APROBADO</span>
+                        <span class="badge-access" style="background:#238636;">Aprobado</span>
                         {% elif v.estado == "Pendiente" %}
-                        <span class="badge-estado" style="background:var(--hazard-yellow); color:black;">PENDIENTE</span>
+                        <span class="badge-access" style="background:var(--accent-yellow); color:black;">Pendiente</span>
                         {% else %}
-                        <span class="badge-estado" style="background:var(--oni-red);">RECHAZADO</span>
+                        <span class="badge-access" style="background:var(--accent);">Rechazado</span>
                         {% endif %}
                     </td>
-                    <td>{{ v.registrado_por or "-" }}</td>
-                    <td class="text-center">
-
-                        <!-- BOTÓN EDITAR -->
-                        <a href="{{ url_for('edit_vacacion', id=v.id) }}" 
-                           class="btn btn-action btn-edit me-2">
-                            <i class="bi bi-pencil"></i> Editar
+                    <td class="text-muted small">{{ v.registrado_por or "-" }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn">
+                            <i class="bi bi-pencil"></i>
                         </a>
-
-                        <!-- BOTÓN ELIMINAR -->
-                        <button onclick="eliminarVacacion({{ v.id }})" 
-                                class="btn btn-action btn-delete">
-                            <i class="bi bi-trash"></i> Eliminar
+                        <button onclick="eliminarVacacion({{ v.id }})" class="action-btn ms-2">
+                            <i class="bi bi-trash"></i>
                         </button>
-
                     </td>
                 </tr>
                 {% endfor %}
