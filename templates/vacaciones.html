@@ -1,185 +1,195 @@
 {% extends "base.html" %}
 {% block content %}
-
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
 :root{
     --bg-main:#0b0f14;
-    --card:#161b22;
-    --card-soft:#1f2630;
-    --accent:#ff3b3b;
-    --yellow:#ffcc00;
-    --green:#2ecc71;
-    --text:#ffffff;
-    --text-soft:#c9d1d9;
-    --border:#2b313a;
+    --bg-card:#121821;
+    --bg-soft:#1a2230;
+    --accent:#e10600;
+    --accent-yellow:#ffc107;
+    --text-main:#ffffff;
+    --text-muted:#a0a8b3;
+    --border:#263042;
 }
 
 /* ===== BASE ===== */
 body{
-    background:var(--bg-main);
+    background:linear-gradient(135deg,#0b0f14,#0f1621);
     font-family:'Inter',sans-serif;
-    color:var(--text);
+    color:var(--text-main);
 }
 
-/* ===== HEADER MINIMAL ===== */
-.clean-header{
+/* ===== HEADER NUEVO ===== */
+.top-header{
+    background:rgba(18,24,33,.95);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    padding:18px 40px;
+    margin-bottom:40px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:15px 40px;
-    background:#11161d;
-    border-bottom:1px solid var(--border);
 }
 
-.clean-header h5{
+.top-header h1{
+    font-size:1.4rem;
+    font-weight:700;
     margin:0;
-    font-weight:600;
-    color:var(--text);
 }
 
 .btn-dashboard{
-    background:transparent;
+    background:var(--bg-soft);
     border:1px solid var(--border);
-    padding:6px 18px;
+    color:var(--text-main);
+    padding:8px 18px;
     border-radius:8px;
-    color:var(--text-soft);
     text-decoration:none;
-    font-size:.85rem;
     transition:.2s;
+    font-weight:600;
 }
 
 .btn-dashboard:hover{
     border-color:var(--accent);
-    color:white;
-}
-
-/* ===== CONTAINER ===== */
-.container{
-    max-width:1300px;
+    color:var(--accent);
 }
 
 /* ===== CARDS ===== */
 .card-custom{
-    background:var(--card);
+    background:var(--bg-card);
     border:1px solid var(--border);
     border-radius:14px;
-    padding:30px;
+    padding:35px;
     margin-bottom:30px;
-    box-shadow:0 8px 30px rgba(0,0,0,.4);
+    box-shadow:0 10px 35px rgba(0,0,0,.45);
 }
 
 /* ===== TITULOS ===== */
 .section-header{
-    font-size:1.1rem;
-    font-weight:600;
+    font-size:1.2rem;
+    font-weight:700;
     margin-bottom:25px;
-    color:var(--yellow);
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+    color:var(--accent-yellow);
 }
 
-/* ===== KPIs ===== */
+/* ===== KPI ===== */
 .kpi-card{
-    background:var(--card-soft);
+    background:linear-gradient(145deg,#151c27,#1c2533);
     border:1px solid var(--border);
-    border-radius:12px;
-    padding:25px;
+    border-radius:14px;
+    padding:30px;
+    transition:.25s;
+}
+
+.kpi-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
 }
 
 .kpi-title{
-    font-size:.75rem;
+    font-size:.8rem;
+    color:var(--text-muted);
     text-transform:uppercase;
-    color:var(--text-soft);
-    letter-spacing:.7px;
+    letter-spacing:1px;
 }
 
 .kpi-number{
-    font-size:2.5rem;
-    font-weight:700;
-    margin-top:8px;
+    font-size:2.8rem;
+    font-weight:800;
+    margin-top:10px;
 }
 
 /* ===== FORM ===== */
 .form-label{
     font-size:.75rem;
-    color:var(--text-soft);
+    color:var(--text-muted);
+    font-weight:600;
 }
 
 .form-control{
-    background:var(--card-soft) !important;
+    background:var(--bg-soft) !important;
     border:1px solid var(--border) !important;
     border-radius:10px !important;
-    color:white !important;
-    height:45px;
+    color:#fff !important;
+    padding:10px;
 }
 
 .form-control:focus{
     border-color:var(--accent) !important;
-    box-shadow:0 0 0 2px rgba(255,59,59,.3) !important;
+    box-shadow:0 0 0 2px rgba(225,6,0,.3) !important;
 }
 
-/* ===== CALENDARIO PERSONALIZADO ===== */
-input[type="date"]{
-    appearance:none;
-    position:relative;
-    padding-right:40px !important;
-}
-
+/* ===== CALENDARIO MEJORADO ===== */
 input[type="date"]::-webkit-calendar-picker-indicator{
     filter:invert(1);
-    opacity:.7;
+    opacity:.8;
     cursor:pointer;
 }
 
-input[type="date"]:hover::-webkit-calendar-picker-indicator{
-    opacity:1;
+input[type="date"]{
+    position:relative;
+}
+
+input[type="date"]:hover{
+    border-color:var(--accent) !important;
 }
 
 /* ===== BOTON REGISTRAR ===== */
 .btn-registrar{
-    background:var(--accent);
+    background:linear-gradient(90deg,#e10600,#ff2a2a);
     border:none;
     border-radius:10px;
-    padding:10px 28px;
-    font-weight:600;
+    padding:10px 30px;
+    font-weight:700;
+    transition:.2s;
 }
 
 .btn-registrar:hover{
-    background:#ff5555;
+    transform:scale(1.05);
 }
 
 /* ===== TEAM CARDS ===== */
 .team-card{
-    background:var(--card-soft);
+    background:var(--bg-soft);
     border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px 18px;
-    margin-bottom:10px;
+    border-radius:12px;
+    padding:18px 22px;
+    margin-bottom:12px;
+    transition:.2s;
+    font-size:.95rem;
+}
+
+.team-card:hover{
+    border-color:var(--accent);
+    transform:translateX(4px);
 }
 
 /* ===== TABLA ===== */
-.table-container{
-    overflow-x:auto;
-}
-
 .table-oni{
     width:100%;
     border-collapse:collapse;
 }
 
+.table-oni thead{
+    background:#18202c;
+}
+
 .table-oni th{
-    padding:16px;
+    padding:18px;
     font-size:.75rem;
     text-transform:uppercase;
-    color:var(--text-soft);
+    letter-spacing:1px;
+    color:#c9d1d9;
     border-bottom:1px solid var(--border);
 }
 
 .table-oni td{
-    padding:16px;
-    font-size:.95rem;
+    padding:18px;
     border-bottom:1px solid var(--border);
-    color:white;
+    font-size:.95rem;
 }
 
 .table-oni tbody tr:hover{
@@ -188,37 +198,31 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator{
 
 /* ===== BADGES ===== */
 .badge-access{
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:.7rem;
-    font-weight:600;
-}
-
-/* ===== BOTONES ACCIONES ===== */
-.action-btn{
-    padding:6px 14px;
-    border-radius:8px;
-    border:none;
+    padding:7px 14px;
+    border-radius:30px;
     font-size:.75rem;
-    font-weight:600;
-    margin-right:6px;
+    font-weight:700;
 }
 
-.btn-edit{
-    background:var(--yellow);
-    color:black;
+/* ===== BOTONES ACCION ===== */
+.action-btn{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    color:#fff;
+    padding:6px 10px;
+    border-radius:8px;
+    transition:.2s;
 }
 
-.btn-delete{
+.action-btn:hover{
     background:var(--accent);
-    color:white;
+    border-color:var(--accent);
 }
 
-.btn-edit:hover{ opacity:.8; }
-.btn-delete:hover{ opacity:.8; }
-
+.action-btn i{
+    font-size:.9rem;
+}
 </style>
-
 <!-- HEADER LIMPIO -->
 <div class="clean-header">
     <h5>Gestión de Vacaciones</h5>
