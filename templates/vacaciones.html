@@ -1,357 +1,201 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-:root{
-    --bg-main:#0b0f14;
-    --bg-card:#131a24;
-    --bg-soft:#1b2432;
-    --accent:#e10600;
-    --accent-yellow:#ffc107;
-    --text-main:#ffffff;
-    --text-muted:#9aa4af;
-    --border:#2a3547;
-}
+<div class="container-fluid mt-4">
 
-/* ===== BASE ===== */
-body{
-    background:linear-gradient(145deg,#0b0f14,#0f1722);
-    font-family:'Inter',sans-serif;
-    color:var(--text-main);
-}
-
-.container{
-    max-width:1400px;
-}
-
-/* ===== CARDS GENERALES ===== */
-.card-custom{
-    background:var(--bg-card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:35px;
-    margin-bottom:40px;
-    box-shadow:0 15px 40px rgba(0,0,0,.45);
-}
-
-/* ===== TITULOS ===== */
-.section-header{
-    font-size:1.25rem;
-    font-weight:800;
-    margin-bottom:30px;
-    padding-bottom:15px;
-    border-bottom:2px solid var(--border);
-    color:var(--accent-yellow);
-    letter-spacing:.5px;
-}
-
-/* ===== KPI ===== */
-.kpi-card{
-    background:linear-gradient(145deg,#182130,#1f2a3d);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:30px;
-    transition:.3s;
-}
-
-.kpi-card:hover{
-    transform:translateY(-6px);
-    border-color:var(--accent);
-}
-
-.kpi-title{
-    font-size:.8rem;
-    color:var(--text-muted);
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.kpi-number{
-    font-size:3rem;
-    font-weight:800;
-    margin-top:10px;
-}
-
-/* ===== FORM ===== */
-.form-label{
-    font-size:.8rem;
-    color:var(--text-muted);
-    font-weight:600;
-}
-
-.form-control{
-    background:#111826 !important;
-    border:1px solid var(--border) !important;
-    border-radius:10px !important;
-    color:#fff !important;
-    padding:12px;
-    font-weight:500;
-}
-
-.form-control:focus{
-    border-color:var(--accent) !important;
-    box-shadow:0 0 0 3px rgba(225,6,0,.25) !important;
-}
-
-/* ===== CALENDARIO MÁS VISIBLE ===== */
-input[type="date"]::-webkit-calendar-picker-indicator{
-    filter:invert(1);
-    opacity:1;
-    cursor:pointer;
-}
-
-input[type="date"]{
-    background:#0f1622 !important;
-}
-
-/* ===== BOTON ===== */
-.btn-registrar{
-    background:linear-gradient(90deg,#e10600,#ff2a2a);
-    border:none;
-    border-radius:10px;
-    padding:12px 30px;
-    font-weight:700;
-    letter-spacing:.5px;
-    transition:.2s;
-}
-
-.btn-registrar:hover{
-    transform:scale(1.05);
-}
-
-/* ===== EN CURSO / PROXIMAS MÁS VISIBLES ===== */
-.team-card{
-    background:linear-gradient(145deg,#1a2330,#222e40);
-    border:1px solid var(--border);
-    border-left:4px solid var(--accent);
-    border-radius:12px;
-    padding:18px 22px;
-    margin-bottom:15px;
-    transition:.2s;
-    font-size:1rem;
-    font-weight:600;
-}
-
-.team-card:hover{
-    transform:translateX(6px);
-    border-left:4px solid var(--accent-yellow);
-}
-
-/* ===== TABLA HISTORIAL ===== */
-.table-container{
-    overflow-x:auto;
-    border-radius:12px;
-    border:1px solid var(--border);
-}
-
-.table-oni{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.table-oni thead{
-    background:#1c2738;
-}
-
-.table-oni th{
-    padding:18px;
-    font-size:.8rem;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    color:#cbd5e1;
-    border-bottom:1px solid var(--border);
-}
-
-.table-oni td{
-    padding:18px;
-    border-bottom:1px solid var(--border);
-    font-size:1rem;
-    font-weight:500;
-}
-
-.table-oni tbody tr{
-    transition:.2s;
-}
-
-.table-oni tbody tr:hover{
-    background:rgba(255,255,255,.05);
-}
-
-/* ===== BADGES ===== */
-.badge-access{
-    padding:8px 16px;
-    border-radius:30px;
-    font-size:.75rem;
-    font-weight:700;
-    letter-spacing:.5px;
-}
-
-/* ===== BOTONES ACCION ===== */
-.action-btn{
-    background:#1b2432;
-    border:1px solid var(--border);
-    color:#fff;
-    padding:6px 10px;
-    border-radius:8px;
-    transition:.2s;
-}
-
-.action-btn:hover{
-    background:var(--accent);
-    border-color:var(--accent);
-}
-</style>
-<!-- HEADER LIMPIO -->
-<div class="clean-header">
-    <h5>Gestión de Vacaciones</h5>
-    <a href="{{ url_for('dashboard') }}" class="btn-dashboard">
-        ← Volver al Dashboard
-    </a>
-</div>
-
-<div class="container py-5">
-
-<!-- KPIs -->
-<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="kpi-card">
-            <div class="kpi-title">Vacaciones activas</div>
-            <div class="kpi-number">{{ activas|length }}</div>
-        </div>
+    <!-- TÍTULO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Panel de Vacaciones</h2>
     </div>
-    <div class="col-md-4">
-        <div class="kpi-card">
-            <div class="kpi-title">Próximas</div>
-            <div class="kpi-number" style="color:var(--yellow)">
-                {{ proximas|length }}
+
+    <!-- RESUMEN -->
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">VACACIONES ACTIVAS</h6>
+                <h3 class="fw-bold">{{ activas or 0 }}</h3>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">PRÓXIMAS</h6>
+                <h3 class="fw-bold">
+                    {% if proximas %}
+                        {{ proximas|length }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">DÍAS USADOS (AÑO)</h6>
+                <h3 class="fw-bold">{{ dias_usados or 0 }}</h3>
+            </div>
+        </div>
+
     </div>
-    <div class="col-md-4">
-        <div class="kpi-card">
-            <div class="kpi-title">Días usados (año)</div>
-            <div class="kpi-number">{{ total_dias_anual }}</div>
+
+    <!-- REGISTRAR VACACIONES -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-dark text-white">
+            Registrar Vacaciones
         </div>
-    </div>
-</div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
+                <div class="row g-3 align-items-end">
 
-<!-- REGISTRO -->
-<div class="card-custom">
-    <div class="section-header">Registrar Vacaciones</div>
-    <form method="POST" action="{{ url_for('solicitar_vacaciones') }}">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <label class="form-label">Empleado</label>
-                <select name="user_id" class="form-control" required>
-                    <option value="">Seleccionar empleado</option>
-                    {% for user in usuarios %}
-                    <option value="{{ user.id }}">
-                        {{ user.nombre }} ({{ user.dias_vacaciones }} días)
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Empleado</label>
+                        <select name="user_id" class="form-select" required>
+                            <option value="">Seleccionar empleado</option>
 
-            <div class="col-md-3">
-                <label class="form-label">Inicio</label>
-                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
-            </div>
+                            {% if users %}
+                                {% for user in users %}
+                                    <option value="{{ user.id }}">
+                                        {{ user.nombre }} ({{ user.dias_vacaciones }} días)
+                                    </option>
+                                {% endfor %}
+                            {% else %}
+                                <option disabled>No hay usuarios disponibles</option>
+                            {% endif %}
 
-            <div class="col-md-3">
-                <label class="form-label">Fin</label>
-                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
-            </div>
+                        </select>
+                    </div>
 
-            <div class="col-md-3">
-                <label class="form-label">Días</label>
-                <input type="number" name="dias" id="dias" class="form-control" readonly>
-            </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Fecha inicio</label>
+                        <input type="date" name="fecha_inicio"
+                               class="form-control" required>
+                    </div>
 
-            <div class="col-12 text-end">
-                <button type="submit" class="btn btn-registrar">
-                    Registrar
-                </button>
-            </div>
-        </div>
-    </form>
-</div>
+                    <div class="col-md-3">
+                        <label class="form-label">Fecha fin</label>
+                        <input type="date" name="fecha_fin"
+                               class="form-control" required>
+                    </div>
 
-<!-- HISTORIAL -->
-<div class="card-custom mt-4">
-    <div class="section-header">Historial General</div>
-
-    <div class="table-container">
-        <table class="table-oni">
-            <thead>
-                <tr>
-                    <th>Usuario</th>
-                    <th>Inicio</th>
-                    <th>Fin</th>
-                    <th>Días</th>
-                    <th>Estado</th>
-                    <th>Autor</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for v in vacaciones %}
-                <tr>
-                    <td><strong>{{ v.user.nombre }}</strong></td>
-                    <td>{{ v.fecha_inicio }}</td>
-                    <td>{{ v.fecha_fin }}</td>
-                    <td style="color:var(--yellow); font-weight:600">
-                        {{ v.dias_solicitados }}
-                    </td>
-                    <td>
-                        {% if v.estado == "Aprobado" %}
-                        <span class="badge-access" style="background:var(--green)">Aprobado</span>
-                        {% elif v.estado == "Pendiente" %}
-                        <span class="badge-access" style="background:var(--yellow); color:black;">Pendiente</span>
-                        {% else %}
-                        <span class="badge-access" style="background:var(--accent)">Rechazado</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ v.registrado_por or "-" }}</td>
-                    <td>
-                        <a href="{{ url_for('edit_vacacion', id=v.id) }}" class="action-btn btn-edit">
-                            Editar
-                        </a>
-                        <button onclick="eliminarVacacion({{ v.id }})" class="action-btn btn-delete">
-                            Eliminar
+                    <div class="col-md-2">
+                        <button type="submit"
+                                class="btn btn-danger w-100">
+                            Registrar
                         </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </div>
+
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+
+    <!-- USUARIOS ACTUALMENTE DE VACACIONES -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-light">
+            Usuarios Actualmente de Vacaciones
+        </div>
+        <div class="card-body">
+
+            {% if activas_list and activas_list|length > 0 %}
+                <ul class="list-group list-group-flush">
+                    {% for v in activas_list %}
+                        <li class="list-group-item">
+                            {{ v.user.nombre }} 
+                            ({{ v.fecha_inicio }} - {{ v.fecha_fin }})
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted mb-0">
+                    No hay vacaciones activas hoy.
+                </p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- PRÓXIMAS VACACIONES -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-light">
+            Próximas Vacaciones
+        </div>
+        <div class="card-body">
+
+            {% if proximas and proximas|length > 0 %}
+                {% for v in proximas %}
+                    <p>
+                        {{ v.user.nombre }} - {{ v.fecha_inicio }}
+                    </p>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No hay próximas vacaciones.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            Historial de Vacaciones
+        </div>
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Días</th>
+                        <th>Estado</th>
+                        <th>Registrado Por</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% if historial and historial|length > 0 %}
+                        {% for v in historial %}
+                        <tr>
+                            <td>{{ v.user.nombre }}</td>
+                            <td>{{ v.fecha_inicio }}</td>
+                            <td>{{ v.fecha_fin }}</td>
+                            <td>{{ v.dias_solicitados }}</td>
+                            <td>
+                                {% if v.estado == "Aprobado" %}
+                                    <span class="badge bg-success">Aprobado</span>
+                                {% elif v.estado == "Pendiente" %}
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Rechazado</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ v.registrado_por }}</td>
+                            <td>
+                                <a href="{{ url_for('edit_vacacion', id=v.id) }}"
+                                   class="btn btn-sm btn-outline-primary">
+                                   Editar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                No hay registros
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 
 </div>
-
-<script>
-const inicio = document.getElementById("fecha_inicio");
-const fin = document.getElementById("fecha_fin");
-const diasInput = document.getElementById("dias");
-
-function calcularDias() {
-    if (inicio.value && fin.value) {
-        const fechaInicio = new Date(inicio.value);
-        const fechaFin = new Date(fin.value);
-        const diff = (fechaFin - fechaInicio) / (1000 * 60 * 60 * 24) + 1;
-        diasInput.value = diff > 0 ? diff : 0;
-    }
-}
-
-inicio.addEventListener("change", calcularDias);
-fin.addEventListener("change", calcularDias);
-
-function eliminarVacacion(id) {
-    if (confirm("¿Seguro que deseas eliminar esta vacación?")) {
-        window.location.href = "/delete_vacacion/" + id;
-    }
-}
-</script>
 
 {% endblock %}
