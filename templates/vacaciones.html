@@ -5,87 +5,58 @@
 
 :root{
     --bg-main:#0b0f14;
-    --bg-card:#121821;
-    --bg-soft:#1a2230;
+    --bg-card:#131a24;
+    --bg-soft:#1b2432;
     --accent:#e10600;
     --accent-yellow:#ffc107;
     --text-main:#ffffff;
-    --text-muted:#a0a8b3;
-    --border:#263042;
+    --text-muted:#9aa4af;
+    --border:#2a3547;
 }
 
 /* ===== BASE ===== */
 body{
-    background:linear-gradient(135deg,#0b0f14,#0f1621);
+    background:linear-gradient(145deg,#0b0f14,#0f1722);
     font-family:'Inter',sans-serif;
     color:var(--text-main);
 }
 
-/* ===== HEADER NUEVO ===== */
-.top-header{
-    background:rgba(18,24,33,.95);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-    padding:18px 40px;
-    margin-bottom:40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.container{
+    max-width:1400px;
 }
 
-.top-header h1{
-    font-size:1.4rem;
-    font-weight:700;
-    margin:0;
-}
-
-.btn-dashboard{
-    background:var(--bg-soft);
-    border:1px solid var(--border);
-    color:var(--text-main);
-    padding:8px 18px;
-    border-radius:8px;
-    text-decoration:none;
-    transition:.2s;
-    font-weight:600;
-}
-
-.btn-dashboard:hover{
-    border-color:var(--accent);
-    color:var(--accent);
-}
-
-/* ===== CARDS ===== */
+/* ===== CARDS GENERALES ===== */
 .card-custom{
     background:var(--bg-card);
     border:1px solid var(--border);
     border-radius:14px;
     padding:35px;
-    margin-bottom:30px;
-    box-shadow:0 10px 35px rgba(0,0,0,.45);
+    margin-bottom:40px;
+    box-shadow:0 15px 40px rgba(0,0,0,.45);
 }
 
 /* ===== TITULOS ===== */
 .section-header{
-    font-size:1.2rem;
-    font-weight:700;
-    margin-bottom:25px;
-    padding-bottom:12px;
-    border-bottom:1px solid var(--border);
+    font-size:1.25rem;
+    font-weight:800;
+    margin-bottom:30px;
+    padding-bottom:15px;
+    border-bottom:2px solid var(--border);
     color:var(--accent-yellow);
+    letter-spacing:.5px;
 }
 
 /* ===== KPI ===== */
 .kpi-card{
-    background:linear-gradient(145deg,#151c27,#1c2533);
+    background:linear-gradient(145deg,#182130,#1f2a3d);
     border:1px solid var(--border);
-    border-radius:14px;
+    border-radius:16px;
     padding:30px;
-    transition:.25s;
+    transition:.3s;
 }
 
 .kpi-card:hover{
-    transform:translateY(-4px);
+    transform:translateY(-6px);
     border-color:var(--accent);
 }
 
@@ -97,53 +68,51 @@ body{
 }
 
 .kpi-number{
-    font-size:2.8rem;
+    font-size:3rem;
     font-weight:800;
     margin-top:10px;
 }
 
 /* ===== FORM ===== */
 .form-label{
-    font-size:.75rem;
+    font-size:.8rem;
     color:var(--text-muted);
     font-weight:600;
 }
 
 .form-control{
-    background:var(--bg-soft) !important;
+    background:#111826 !important;
     border:1px solid var(--border) !important;
     border-radius:10px !important;
     color:#fff !important;
-    padding:10px;
+    padding:12px;
+    font-weight:500;
 }
 
 .form-control:focus{
     border-color:var(--accent) !important;
-    box-shadow:0 0 0 2px rgba(225,6,0,.3) !important;
+    box-shadow:0 0 0 3px rgba(225,6,0,.25) !important;
 }
 
-/* ===== CALENDARIO MEJORADO ===== */
+/* ===== CALENDARIO MÁS VISIBLE ===== */
 input[type="date"]::-webkit-calendar-picker-indicator{
     filter:invert(1);
-    opacity:.8;
+    opacity:1;
     cursor:pointer;
 }
 
 input[type="date"]{
-    position:relative;
+    background:#0f1622 !important;
 }
 
-input[type="date"]:hover{
-    border-color:var(--accent) !important;
-}
-
-/* ===== BOTON REGISTRAR ===== */
+/* ===== BOTON ===== */
 .btn-registrar{
     background:linear-gradient(90deg,#e10600,#ff2a2a);
     border:none;
     border-radius:10px;
-    padding:10px 30px;
+    padding:12px 30px;
     font-weight:700;
+    letter-spacing:.5px;
     transition:.2s;
 }
 
@@ -151,62 +120,76 @@ input[type="date"]:hover{
     transform:scale(1.05);
 }
 
-/* ===== TEAM CARDS ===== */
+/* ===== EN CURSO / PROXIMAS MÁS VISIBLES ===== */
 .team-card{
-    background:var(--bg-soft);
+    background:linear-gradient(145deg,#1a2330,#222e40);
     border:1px solid var(--border);
+    border-left:4px solid var(--accent);
     border-radius:12px;
     padding:18px 22px;
-    margin-bottom:12px;
+    margin-bottom:15px;
     transition:.2s;
-    font-size:.95rem;
+    font-size:1rem;
+    font-weight:600;
 }
 
 .team-card:hover{
-    border-color:var(--accent);
-    transform:translateX(4px);
+    transform:translateX(6px);
+    border-left:4px solid var(--accent-yellow);
 }
 
-/* ===== TABLA ===== */
+/* ===== TABLA HISTORIAL ===== */
+.table-container{
+    overflow-x:auto;
+    border-radius:12px;
+    border:1px solid var(--border);
+}
+
 .table-oni{
     width:100%;
     border-collapse:collapse;
 }
 
 .table-oni thead{
-    background:#18202c;
+    background:#1c2738;
 }
 
 .table-oni th{
     padding:18px;
-    font-size:.75rem;
+    font-size:.8rem;
     text-transform:uppercase;
     letter-spacing:1px;
-    color:#c9d1d9;
+    color:#cbd5e1;
     border-bottom:1px solid var(--border);
 }
 
 .table-oni td{
     padding:18px;
     border-bottom:1px solid var(--border);
-    font-size:.95rem;
+    font-size:1rem;
+    font-weight:500;
+}
+
+.table-oni tbody tr{
+    transition:.2s;
 }
 
 .table-oni tbody tr:hover{
-    background:rgba(255,255,255,.04);
+    background:rgba(255,255,255,.05);
 }
 
 /* ===== BADGES ===== */
 .badge-access{
-    padding:7px 14px;
+    padding:8px 16px;
     border-radius:30px;
     font-size:.75rem;
     font-weight:700;
+    letter-spacing:.5px;
 }
 
 /* ===== BOTONES ACCION ===== */
 .action-btn{
-    background:var(--bg-soft);
+    background:#1b2432;
     border:1px solid var(--border);
     color:#fff;
     padding:6px 10px;
@@ -217,10 +200,6 @@ input[type="date"]:hover{
 .action-btn:hover{
     background:var(--accent);
     border-color:var(--accent);
-}
-
-.action-btn i{
-    font-size:.9rem;
 }
 </style>
 <!-- HEADER LIMPIO -->
