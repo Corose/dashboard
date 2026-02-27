@@ -384,6 +384,11 @@ def solicitar_vacaciones():
         user_id = request.form["user_id"]
         user = User.query.get(user_id)
 
+        # 🔴 Validar usuario
+        if not user:
+            flash("Empleado no encontrado", "danger")
+            return redirect(url_for("vacaciones_view"))
+
         fecha_inicio = datetime.strptime(
             request.form["fecha_inicio"], "%Y-%m-%d"
         ).date()
@@ -393,17 +398,29 @@ def solicitar_vacaciones():
         ).date()
 
         if fecha_fin < fecha_inicio:
-            flash("La fecha fin no puede ser menor que la fecha inicio")
+            flash("La fecha fin no puede ser menor que la fecha inicio", "danger")
             return redirect(url_for("vacaciones_view"))
 
         dias = (fecha_fin - fecha_inicio).days + 1
 
-        # 🔴 Validar días disponibles
-        if user.dias_vacaciones < dias:
-            flash("El empleado no tiene suficientes días disponibles")
+        # 🔴 Validar traslape
+        traslape = Vacacion.query.filter(
+            Vacacion.user_id == user_id,
+            Vacacion.estado == "Aprobado",
+            Vacacion.fecha_inicio <= fecha_fin,
+            Vacacion.fecha_fin >= fecha_inicio
+        ).first()
+
+        if traslape:
+            flash("El empleado ya tiene vacaciones en esas fechas", "danger")
             return redirect(url_for("vacaciones_view"))
 
-        # 🔵 DESCONTAR SOLO UNA VEZ
+        # 🔴 Validar saldo suficiente
+        if user.dias_vacaciones < dias:
+            flash("El empleado no tiene suficientes días disponibles", "danger")
+            return redirect(url_for("vacaciones_view"))
+
+        # 🟢 Descontar días
         user.dias_vacaciones -= dias
 
         nueva = Vacacion(
@@ -419,11 +436,12 @@ def solicitar_vacaciones():
         db.session.add(nueva)
         db.session.commit()
 
-        flash("Vacaciones registradas correctamente")
+        flash("Vacaciones registradas correctamente", "success")
 
     except Exception as e:
         db.session.rollback()
-        flash("Error al registrar vacaciones")
+        print("ERROR:", e)
+        flash("Error al registrar vacaciones", "danger")
 
     return redirect(url_for("vacaciones_view"))
 
@@ -492,33 +510,59 @@ from datetime import datetime
 @login_required
 def edit_vacacion(id):
     vacacion = Vacacion.query.get_or_404(id)
+    empleado = vacacion.user
 
     if request.method == "POST":
         try:
-            vacacion.fecha_inicio = datetime.strptime(
+            # Guardamos valores anteriores
+            dias_anteriores = vacacion.dias_solicitados
+            estado_anterior = vacacion.estado
+
+            # Nuevas fechas
+            fecha_inicio = datetime.strptime(
                 request.form["fecha_inicio"], "%Y-%m-%d"
             ).date()
 
-            vacacion.fecha_fin = datetime.strptime(
+            fecha_fin = datetime.strptime(
                 request.form["fecha_fin"], "%Y-%m-%d"
             ).date()
 
-            vacacion.dias_solicitados = int(request.form["dias"])
+            dias_nuevos = (fecha_fin - fecha_inicio).days + 1
 
-            vacacion.estado = request.form["estado"]
+            nuevo_estado = request.form["estado"]
+
+            # 🔥 Ajuste inteligente de saldo
+
+            # Caso 1: Sigue aprobado → ajustar diferencia
+            if estado_anterior == "Aprobado" and nuevo_estado == "Aprobado":
+                diferencia = dias_nuevos - dias_anteriores
+                empleado.dias_vacaciones -= diferencia
+
+            # Caso 2: Antes no aprobado y ahora aprobado → descontar completo
+            elif estado_anterior != "Aprobado" and nuevo_estado == "Aprobado":
+                empleado.dias_vacaciones -= dias_nuevos
+
+            # Caso 3: Antes aprobado y ahora no aprobado → devolver días
+            elif estado_anterior == "Aprobado" and nuevo_estado != "Aprobado":
+                empleado.dias_vacaciones += dias_anteriores
+
+            # Actualizar registro
+            vacacion.fecha_inicio = fecha_inicio
+            vacacion.fecha_fin = fecha_fin
+            vacacion.dias_solicitados = dias_nuevos
+            vacacion.estado = nuevo_estado
 
             db.session.commit()
 
-            print("CAMBIOS GUARDADOS")
             flash("Vacación actualizada correctamente", "success")
-
             return redirect(url_for("vacaciones_view"))
 
         except Exception as e:
-            print("ERROR AL GUARDAR:", e)
+            print("ERROR AL EDITAR:", e)
             flash("Error al actualizar", "danger")
 
     return render_template("edit_vacacion.html", vacacion=vacacion)
+
 # =========================
 # EXPORTAR VACACIONES A EXCEL (ADMIN ONLY)
 # =========================
