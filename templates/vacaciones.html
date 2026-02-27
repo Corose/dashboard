@@ -17,26 +17,66 @@
         </div>
     </div>
 
+
+
+    <div class="card mb-4 border-warning">
+  <div class="card-header bg-warning text-dark">
+    Vacaciones Próximas
+  </div>
+  <div class="card-body">
+    {% if proximas %}
+      <ul>
+        {% for v in proximas %}
+          <li>
+            {{ v.user.nombre }} inicia el {{ v.fecha_inicio }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No hay vacaciones próximas.</p>
+    {% endif %}
+  </div>
+</div>
+
+
+<div class="card mb-4 border-secondary">
+  <div class="card-header bg-secondary text-white">
+    Vacaciones Finalizadas
+  </div>
+  <div class="card-body">
+    {% if finalizadas %}
+      <ul>
+        {% for v in finalizadas %}
+          <li>
+            {{ v.user.nombre }} (Finalizó el {{ v.fecha_fin }})
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No hay vacaciones finalizadas.</p>
+    {% endif %}
+  </div>
+</div>
+
     <!-- 🔴 Usuarios actualmente de vacaciones -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-danger text-white">
-            Usuarios Actualmente de Vacaciones
-        </div>
-        <div class="card-body">
-            {% if usuarios_vacaciones %}
-                <ul class="list-group">
-                    {% for user in usuarios_vacaciones %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ user.nombre }}
-                            <span class="badge bg-danger">DE VACACIONES</span>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-muted">Nadie está de vacaciones actualmente.</p>
-            {% endif %}
-        </div>
-    </div>
+  <div class="card mb-4 border-success">
+  <div class="card-header bg-success text-white">
+    Usuarios Actualmente de Vacaciones
+  </div>
+  <div class="card-body">
+    {% if activas %}
+      <ul>
+        {% for v in activas %}
+          <li>
+            {{ v.user.nombre }} ({{ v.fecha_inicio }} - {{ v.fecha_fin }})
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nadie está de vacaciones actualmente.</p>
+    {% endif %}
+  </div>
+</div>
 
     <!-- 📝 Registrar Vacaciones (Solo Admin) -->
     {% if current_user.role == "admin" %}

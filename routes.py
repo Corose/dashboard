@@ -310,6 +310,8 @@ def import_excel():
 # =========================
 # VACACIONES
 # =========================
+from datetime import date
+
 @app.route("/vacaciones")
 @login_required
 def vacaciones_view():
@@ -319,8 +321,28 @@ def vacaciones_view():
 
     hoy = date.today()
 
+    # 🔵 Todas
     vacaciones = Vacacion.query.order_by(
-        Vacacion.id.desc()
+        Vacacion.fecha_inicio.desc()
+    ).all()
+
+    # 🟢 Activas hoy
+    activas = Vacacion.query.filter(
+        Vacacion.estado == "Aprobado",
+        Vacacion.fecha_inicio <= hoy,
+        Vacacion.fecha_fin >= hoy
+    ).all()
+
+    # 🔜 Próximas
+    proximas = Vacacion.query.filter(
+        Vacacion.estado == "Aprobado",
+        Vacacion.fecha_inicio > hoy
+    ).all()
+
+    # ⚪ Finalizadas
+    finalizadas = Vacacion.query.filter(
+        Vacacion.estado == "Aprobado",
+        Vacacion.fecha_fin < hoy
     ).all()
 
     total_dias_anual = db.session.query(
@@ -329,18 +351,14 @@ def vacaciones_view():
         Vacacion.anio == hoy.year
     ).scalar() or 0
 
-    usuarios_vacaciones = db.session.query(User).join(Vacacion).filter(
-        Vacacion.estado == "Aprobado",
-        Vacacion.fecha_inicio <= hoy,
-        Vacacion.fecha_fin >= hoy
-    ).all()
-
     usuarios = User.query.filter_by(activo=True).all()
 
     return render_template(
         "vacaciones.html",
         vacaciones=vacaciones,
-        usuarios_vacaciones=usuarios_vacaciones,
+        activas=activas,
+        proximas=proximas,
+        finalizadas=finalizadas,
         usuarios=usuarios,
         total_dias_anual=total_dias_anual
     )
